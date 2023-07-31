@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
+import LoaderOne from "../components/loaders/LoaderOne";
 // import useRefreshToken from "../../hooks/useRefreshToken";
 // import { useAppContext } from "../../context/AuthProvider";
 
@@ -18,13 +19,12 @@ const PersistAuth = () => {
     //     setIsLoading(false);
     //   }
     // };
-
     // !auth?.token ? verifyRefreshToken() : setIsLoading(false);
     // console.log(auth);
     setIsLoading(false);
   }, []);
 
-  return <>{isLoading ? <p>Loading...</p> : <Outlet />}</>;
+  return <>{isLoading ? <LoaderOne /> : <Outlet />}</>;
 };
 
 export default PersistAuth;

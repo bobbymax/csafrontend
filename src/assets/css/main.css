@@ -827,3 +827,18 @@ select, .cs__select::after, .cs__select__lg::after {
 .none {
     display: none;
 }
+
+/* Loader Styling */
+.animation__wrapper {
+    display: flex;
+    width: 40vw;
+    height: 100vh;
+    background-color: var(--color-background);
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.anime {
+    width: 60%;
+}

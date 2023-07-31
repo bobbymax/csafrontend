@@ -5,10 +5,11 @@ import Protected from "./layouts/guards/Protected";
 import Guest from "./layouts/guards/Guest";
 import PersistAuth from "./layouts/guards/PersistAuth";
 import { routes } from "./http/routes";
+import LoaderOne from "./layouts/components/loaders/LoaderOne";
 
 const App = () => {
   return (
-    <Suspense fallback={<p>Loading...</p>}>
+    <Suspense fallback={<LoaderOne />}>
       <Routes>
         {routes.guest.map((pg, i) => (
           <Route
