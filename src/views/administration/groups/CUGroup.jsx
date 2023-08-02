@@ -101,7 +101,7 @@ const CUGroup = ({
           <CSInput
             id="name"
             label="Name"
-            placeholder="Enter Application Name"
+            placeholder="Enter Group Name"
             value={state.name}
             onChange={(e) => setState({ ...state, name: e.target.value })}
           />

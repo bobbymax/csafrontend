@@ -17,6 +17,8 @@ const Groups = () => {
     {
       field: "name",
       header: "Name",
+      isSortable: true,
+
     },
     {
       field: "label",

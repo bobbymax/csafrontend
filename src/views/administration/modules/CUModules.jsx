@@ -147,7 +147,7 @@ const CUModules = ({
           <CSInput
             id="name"
             label="Name"
-            placeholder="Enter Application Name"
+            placeholder="Enter Module Name"
             value={state.name}
             onChange={(e) => setState({ ...state, name: e.target.value })}
           />
@@ -165,7 +165,7 @@ const CUModules = ({
           <CSInput
             id="icon"
             label="Icon"
-            placeholder="Enter App Icon"
+            placeholder="Enter Module Icon"
             value={state.icon}
             onChange={(e) => setState({ ...state, icon: e.target.value })}
           />
