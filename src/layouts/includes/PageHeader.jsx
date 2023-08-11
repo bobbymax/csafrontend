@@ -16,15 +16,17 @@ const PageHeader = ({
           <span className="material-icons-sharp">{icon}</span>
           <h2>{text}</h2>
         </div>
-        <div className="page__header__resource">
-          <CSButton
-            text={btnText}
-            icon={btnIcon}
-            variant={variant}
-            disabled={disabled}
-            onClick={() => handleClick()}
-          />
-        </div>
+        {btnText !== "" && (
+          <div className="page__header__resource">
+            <CSButton
+              text={btnText}
+              icon={btnIcon}
+              variant={variant}
+              disabled={disabled}
+              onClick={() => handleClick()}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

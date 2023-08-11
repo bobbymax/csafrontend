@@ -175,6 +175,11 @@ b {
     padding: 2.8rem 1.78rem;
 }
 
+main {
+    overflow: auto;
+    max-height: 80vh;
+}
+
 .top__header {
     border-bottom: 1px solid var(--color-card-border);
     background-color: var(--color-background);
@@ -218,6 +223,7 @@ b {
 aside {
     background-color: var(--color-sidebar);
     position: relative;
+    height: 100vh;
 }
 
 .navigation {
@@ -841,4 +847,10 @@ select, .cs__select::after, .cs__select__lg::after {
 
 .anime {
     width: 60%;
+}
+
+/* Panel Stylings */
+.panel {
+    padding: 1.32rem 1.28rem;
+    background-color: var(--color-background);
 }

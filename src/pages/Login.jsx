@@ -50,7 +50,7 @@ const Login = () => {
 
       if (!error?.response) {
         setErrorMsg("No Server Response");
-      } else if (err?.response?.status === 400) {
+      } else if (error?.response?.status === 400) {
         setErrorMsg("Missing Username or Password");
       } else if (error.response?.status === 401) {
         setErrorMsg("Unauthorized");

@@ -75,6 +75,8 @@ const CSDatatable = ({
         rows={10}
         rowsPerPageOptions={[2, 10, 25, 50, 100]}
         totalRecords={data?.length}
+        scrollable
+        scrollHeight="520px"
       >
         {columns.map((col, i) => (
           <Column
