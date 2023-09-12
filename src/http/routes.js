@@ -22,11 +22,30 @@ const InventoryCategories = lazy(() => import("../views/inventory/inventory-cate
 const StockCategories = lazy(() => import("../views/inventory/stock-categories/StockCategories"))
 const StockTypes = lazy(() => import("../views/inventory/stock-types/StockTypes"))
 const Tags = lazy(() => import("../views/inventory/tags/Tags"))
+const Seatings = lazy(() => import("../views/inventory/seatings/Seatings"))
 const Brands = lazy(() => import("../views/inventory/brands/Brands"))
 const Stocks = lazy(() => import("../views/inventory/stocks/Stocks"))
 const CUStocks = lazy(() => import("../views/inventory/stocks/CUStocks"))
 const StockItems = lazy(() => import("../views/inventory/items/StockItems"))
 const CUStockItem = lazy(() => import("../views/inventory/items/CUStockItem"))
+
+const Rooms = lazy(() => import("../views/inventory/rooms/Rooms"))
+const HallCategories = lazy(() => import("../views/inventory/halls/HallCategories"))
+const Wings = lazy(() => import("../views/inventory/wings/Wings"))
+
+const MakeRequisition = lazy(() => import("../views/operations/requisitions/MakeRequisition"))
+const RequisitionItems = lazy(() => import("../views/operations/requisitions/RequisitionItems"))
+const Requisitions = lazy(() => import("../views/inventory/requisitions/Requisitions"))
+const AssignRequisition = lazy(() => import("../views/inventory/requisitions/AssignRequisition"))
+const ApproveRequisitions = lazy(() => import("../views/operations/requisitions/ApproveRequisitions"))
+const ViewRequisition = lazy(() => import("../views/operations/requisitions/ViewRequisition"))
+const Tasks = lazy(() => import("../views/operations/tasks/Tasks"))
+const TreatRequisitions = lazy(() => import("../views/inventory/requisitions/TreatRequisitions"))
+const Requisition = lazy(() => import("../views/inventory/requisitions/Requisition"))
+
+// Requests
+const Reservations = lazy(() => import("../views/operations/reservations/Reservations"))
+const Imports = lazy(() => import("../views/administration/imports/Imports"))
 
 export const routes = {
     guest: [
@@ -103,6 +122,11 @@ export const routes = {
             url: '/administration/staff'
         },
         {
+            name: 'Imports',
+            element: <Imports />,
+            url: '/administration/imports'
+        },
+        {
             name: 'Manage Staff',
             element: <ManageEmployee />,
             url: '/administration/manage/staff'
@@ -123,9 +147,29 @@ export const routes = {
             url: '/inventory/stock/types'
         },
         {
+            name: 'Hall Categories',
+            element: <HallCategories />,
+            url: '/inventory/hall/categories'
+        },
+        {
             name: 'Stock Types',
             element: <Tags />,
             url: '/inventory/tags'
+        },
+        {
+            name: 'Wings',
+            element: <Wings />,
+            url: '/inventory/wings'
+        },
+        {
+            name: 'Rooms',
+            element: <Rooms />,
+            url: '/inventory/rooms'
+        },
+        {
+            name: 'Seating Arrangements',
+            element: <Seatings />,
+            url: '/inventory/seatings'
         },
         {
             name: 'Brands',
@@ -161,6 +205,61 @@ export const routes = {
             name: 'Update Stock Item',
             element: <CUStockItem />,
             url: '/inventory/stock/items/update'
+        },
+        {
+            name: 'Make Requisition',
+            element: <MakeRequisition />,
+            url: '/operations/requisitions'
+        },
+        {
+            name: 'Reservations',
+            element: <Reservations />,
+            url: '/operations/reservations'
+        },
+        {
+            name: 'Requisition Items',
+            element: <RequisitionItems />,
+            url: '/operations/make/requisition'
+        },
+        {
+            name: 'Update Requisitions',
+            element: <RequisitionItems />,
+            url: '/operations/update/requisition'
+        },
+        {
+            name: 'Requisitions',
+            element: <Requisitions />,
+            url: '/inventory/requisitions'
+        },
+        {
+            name: 'Assign Requisitions',
+            element: <AssignRequisition />,
+            url: '/inventory/assign/requisition'
+        },
+        {
+            name: 'Treat Requisitions',
+            element: <TreatRequisitions />,
+            url: '/inventory/treat/requisitions'
+        },
+        {
+            name: 'View Requisition',
+            element: <ViewRequisition />,
+            url: '/operations/view/requisition'
+        },
+        {
+            name: 'Approve Requisitions',
+            element: <ApproveRequisitions />,
+            url: '/operations/approve/requisitions'
+        },
+        {
+            name: 'Handle Requisition',
+            element: <Requisition />,
+            url: '/inventory/treat/requisition/:code'
+        },
+        {
+            name: 'Tasks',
+            element: <Tasks />,
+            url: '/operations/tasks'
         },
     ]
 }

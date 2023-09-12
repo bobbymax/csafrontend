@@ -43,3 +43,34 @@ export const splitDetails = (txt) => {
 
   return options;
 };
+
+export const EXTS = ["xlsx", "xls", "csv"];
+
+export const getExtension = (file) => {
+  const parts = file.name.split(".");
+  const ext = parts[parts.length - 1];
+  return EXTS.includes(ext);
+};
+
+export const convertToJson = (headers, data) => {
+  const rows = [];
+  data.forEach((row) => {
+    let rowData = {};
+    row.forEach((el, index) => {
+      rowData[headers[index]] = el;
+    });
+    rows.push(rowData);
+  });
+
+  return rows;
+};
+
+export const formatSelectOptions = (data, value, label) =>
+  data?.length > 0 &&
+  data.map((val) => ({
+    value: val[value],
+    label: val[label],
+    raw: {
+      ...data[0]
+    }
+  }));

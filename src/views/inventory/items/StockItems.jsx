@@ -18,22 +18,8 @@ const StockItems = () => {
       isSortable: true,
     },
     {
-      field: "code",
+      field: "barcode",
       header: "Code",
-    },
-    {
-      field: "brand",
-      header: "Brand",
-    },
-    {
-      field: "type",
-      header: "Type",
-      isSortable: true,
-    },
-    {
-      field: "department",
-      header: "Owner",
-      isSortable: true,
     },
     {
       field: "quantity",
@@ -56,7 +42,7 @@ const StockItems = () => {
     const controller = new AbortController();
 
     try {
-      const urls = ["items", "stocks", "locations", "companies"];
+      const urls = ["items", "stocks", "locations"];
 
       const requests = urls.map((url) => axios.get(url));
 
@@ -66,7 +52,6 @@ const StockItems = () => {
           setDependencies({
             stocks: responses[1].data?.data,
             locations: responses[2].data?.data,
-            vendors: responses[3].data?.data,
           });
         })
         .catch((err) => console.error(err));

@@ -6,13 +6,14 @@ const StateContext = createContext();
 
 export const ContextProvider = ({ children }) => {
     const [apps, setApps] = useState([])
+    const [groups, setGroups] = useState([])
     const [canvas, setCanvas] = useState(false)
     const {auth} = useAppContext()
     const axios = useAxiosPrivate()
 
     
     useEffect(() => {
-      if (auth?.user && auth?.token) {
+      if (auth?.user && auth?.token && auth?.user) {
         try {
           axios.get("applications")
         .then(res => setApps(res.data.data))
@@ -20,12 +21,16 @@ export const ContextProvider = ({ children }) => {
         } catch (err) {
           console.error(err)
         }
+
+        const {groups} = auth?.user
+
+        setGroups(groups)
       }
     }, [auth])
 
   return (
     <StateContext.Provider
-      value={{ apps, setApps, canvas, setCanvas }}
+      value={{ apps, setApps, canvas, setCanvas, groups }}
     >
       {children}
     </StateContext.Provider>

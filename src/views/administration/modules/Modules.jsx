@@ -32,6 +32,18 @@ const Modules = () => {
     },
   ];
 
+  const cols = [
+    ...columns,
+    {
+      field: "application",
+      header: "Application",
+    },
+    {
+      field: "icon",
+      header: "Icon",
+    },
+  ];
+
   const handleSubmit = (response) => {
     if (response?.action === "alter") {
       setCollection(
@@ -109,9 +121,11 @@ const Modules = () => {
         <div className="col-md-12">
           <CSDatatable
             columns={columns}
+            cols={cols}
             data={collection}
             isSearchable
             manage={manage}
+            exportable
           />
         </div>
       </div>

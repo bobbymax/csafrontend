@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
@@ -8,16 +8,81 @@ import { FilterMatchMode } from "primereact/api";
 import { InputText } from "primereact/inputtext";
 
 const CSDatatable = ({
-  columns,
-  data,
+  columns = [],
+  cols = [],
+  data = [],
   manage = undefined,
   print = undefined,
   isSearchable = false,
   destroy = undefined,
+  assign = undefined,
+  view = undefined,
+  approve = undefined,
+  exportable = false,
 }) => {
+  const [exports, setExports] = useState([]);
+  const dt = useRef(null);
+
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
+
+  const exportColumns = cols.map((col) => ({
+    title: col.header,
+    dataKey: col.field,
+  }));
+
+  useEffect(() => {
+    if (columns.length > 0 && data.length > 0) {
+      setExports(data);
+    }
+  }, [columns, data]);
+
+  const exportCSV = (selectionOnly) => {
+    dt.current.exportCSV({ selectionOnly });
+  };
+
+  const exportPdf = () => {
+    import("jspdf").then((jsPDF) => {
+      import("jspdf-autotable").then(() => {
+        const doc = new jsPDF.default(0, 0);
+
+        doc.autoTable(exportColumns, exports);
+        doc.save("exports.pdf");
+      });
+    });
+  };
+
+  const exportExcel = () => {
+    import("xlsx").then((xlsx) => {
+      const worksheet = xlsx.utils.json_to_sheet(exports);
+      const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
+      const excelBuffer = xlsx.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+      });
+
+      saveAsExcelFile(excelBuffer, "exports");
+    });
+  };
+
+  const saveAsExcelFile = (buffer, fileName) => {
+    import("file-saver").then((module) => {
+      if (module && module.default) {
+        let EXCEL_TYPE =
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+        let EXCEL_EXTENSION = ".xlsx";
+        const blob = new Blob([buffer], {
+          type: EXCEL_TYPE,
+        });
+
+        module.default.saveAs(
+          blob,
+          fileName + "_export_" + new Date().getTime() + EXCEL_EXTENSION
+        );
+      }
+    });
+  };
 
   const actionBodyTemplate = (raw) => {
     return (
@@ -43,12 +108,93 @@ const CSDatatable = ({
     return (
       <button
         type="button"
-        className="table__print__btn bg__danger"
+        className="cs__table__btn cs__bg__danger"
         onClick={() => destroy(raw)}
+        disabled={raw?.status !== "pending"}
       >
-        <span className="material-icons-sharp">delete</span>
+        <span className="material-icons-sharp">close</span>
+        <p>Delete</p>
       </button>
     );
+  };
+
+  const viewBodyTemplate = (raw) => {
+    return (
+      <button
+        type="button"
+        className="cs__table__btn cs__bg__info"
+        onClick={() => view(raw)}
+      >
+        <span className="material-icons-sharp">visibility</span>
+        <p>View</p>
+      </button>
+    );
+  };
+
+  const approveBodyTemplate = (raw) => {
+    return (
+      <button
+        type="button"
+        className="cs__table__btn cs__bg__success"
+        onClick={() => approve(raw)}
+        disabled={raw?.status !== "pending"}
+      >
+        <span className="material-icons-sharp">check_circle</span>
+        <p>Approve</p>
+      </button>
+    );
+  };
+
+  const assignBodyTemplate = (raw) => {
+    return (
+      <button
+        type="button"
+        className="cs__table__btn cs__bg__success"
+        onClick={() => assign(raw)}
+        disabled={raw?.status !== "registered"}
+      >
+        <span className="material-icons-sharp">visibility</span>
+        <p>View Request</p>
+      </button>
+    );
+  };
+
+  const header = () => {
+    if (exportable) {
+      return (
+        <div className="cs__flex cs__justify__end cs__md__gap">
+          <button
+            type="button"
+            className="cs__exports__btn cs__csv"
+            onClick={() => exportCSV(false)}
+            data-pr-tooltip="CSV"
+          >
+            <span className="material-icons-sharp">article</span>
+            <p>.CSV</p>
+          </button>
+          <button
+            type="button"
+            className="cs__exports__btn cs__xlsx"
+            onClick={exportExcel}
+            data-pr-tooltip="XLS"
+          >
+            <span className="material-icons-sharp">receipt_long</span>
+            <p>.XLSX</p>
+          </button>
+          <button
+            type="button"
+            className="cs__exports__btn cs__pdf"
+            onClick={exportPdf}
+            data-pr-tooltip="PDF"
+          >
+            <span className="material-icons-sharp">picture_as_pdf</span>
+            <p>.PDF</p>
+          </button>
+        </div>
+      );
+    } else {
+      return <></>;
+    }
   };
 
   return (
@@ -69,7 +215,9 @@ const CSDatatable = ({
       )}
 
       <DataTable
+        header={header}
         value={data}
+        ref={dt}
         filters={filters}
         paginator
         rows={10}
@@ -88,6 +236,9 @@ const CSDatatable = ({
         ))}
         {manage !== undefined && <Column body={actionBodyTemplate} />}
         {print !== undefined && <Column body={printBodyTemplate} />}
+        {assign !== undefined && <Column body={assignBodyTemplate} />}
+        {view !== undefined && <Column body={viewBodyTemplate} />}
+        {approve !== undefined && <Column body={approveBodyTemplate} />}
         {destroy !== undefined && <Column body={destroyBodyTemplate} />}
       </DataTable>
     </div>
