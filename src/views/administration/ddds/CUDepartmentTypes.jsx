@@ -100,7 +100,7 @@ const CUDepartmentTypes = ({
           <CSInput
             id="name"
             label="Name"
-            placeholder="Enter Staff Type"
+            placeholder="Enter DDD Type"
             value={state.name}
             onChange={(e) => setState({ ...state, name: e.target.value })}
           />

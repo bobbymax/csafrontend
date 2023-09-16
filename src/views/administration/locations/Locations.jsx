@@ -20,7 +20,7 @@ const Locations = () => {
       isSortable: true,
     },
     {
-      field: "hasFloors",
+      field: "hasFloors_display",
       header: "Has Floors",
     },
   ];

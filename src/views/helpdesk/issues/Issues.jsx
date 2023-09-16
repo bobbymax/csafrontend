@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
-import Alert from '../../../services/alert';
-import CUFloor from './CUFloor';
 import PageHeader from '../../../layouts/includes/PageHeader';
 import CSDatatable from '../../../layouts/components/tables/CSDatatable';
+import Alert from '../../../services/alert';
+import CUIssues from './CUIssues';
 
-const Floors = () => {
-    const [collection, setCollection] = useState();
+const Issues = () => {
+    const [collection, setCollection] = useState([]);
+    const [incidentCats, setIncidentCats] = useState([]);
     const [show, setShow] = useState(false);
     const [data, setData] = useState(undefined);
     const [isUpdating, setIsUpdating] = useState(false);
@@ -15,17 +16,11 @@ const Floors = () => {
 
     const columns = [
         {
-            field: 'name',
-            header: 'Name',
-            isSortable: true,
-        },
-        {
-            field: 'number',
-            header: 'Floor Number',
+            field: "name",
+            header: "Name",
             isSortable: true,
         },
     ];
-
 
     const handleSubmit = (response) => {
         if (response?.action === "alter") {
@@ -59,33 +54,45 @@ const Floors = () => {
     };
 
     useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
         try {
-            axios
-                .get("floors")
-                .then((res) => {
-                    setCollection(res.data.data);
+            const urls = ["issues", "incidentCategories"];
+
+            const requests = urls.map((url) => axios.get(url));
+
+            Promise.all(requests)
+                .then((responses) => {
+                    setCollection(responses[0].data?.data);
+                    setIncidentCats(responses[1].data?.data);
                 })
-                .catch((err) => console.error(err.message));
+                .catch((err) => console.error(err));
         } catch (error) {
             console.error(error);
         }
+
+        return () => {
+            isMounted = false;
+            controller.abort();
+        };
     }, []);
 
     return (
         <>
-            <CUFloor
-                title="Add Location"
+            <CUIssues
+                title="Add Issue"
                 show={show}
-                lg={false}
-                isUpdating={isUpdating}
                 handleClose={handleClose}
                 handleSubmit={handleSubmit}
+                isUpdating={isUpdating}
                 data={data}
+                dependencies={{ incidentCategories: incidentCats, issues: collection }}
             />
             <div className="row">
                 <PageHeader
-                    text="Floors"
-                    btnText="Create Floor"
+                    text="Issues"
+                    btnText="Create Issue"
                     handleClick={() => setShow(true)}
                 />
                 <div className="col-md-12">
@@ -101,4 +108,4 @@ const Floors = () => {
     )
 }
 
-export default Floors
+export default Issues

@@ -47,6 +47,11 @@ const Requisition = lazy(() => import("../views/inventory/requisitions/Requisiti
 const Reservations = lazy(() => import("../views/operations/reservations/Reservations"))
 const Imports = lazy(() => import("../views/administration/imports/Imports"))
 
+// Helpdesk
+const IncidentCategories = lazy(() => import("../views/helpdesk/incident-categories/IncidentCategories"))
+const Issues = lazy(() => import("../views/helpdesk/issues/Issues"))
+const Tickets = lazy(() => import("../views/helpdesk/tickets/Tickets"))
+
 export const routes = {
     guest: [
         {
@@ -261,5 +266,24 @@ export const routes = {
             element: <Tasks />,
             url: '/operations/tasks'
         },
+        // Helpdesk
+        {
+            name: 'Incident Categories',
+            element: <IncidentCategories />,
+            url: '/helpdesk/incident/categories'
+        },
+        {
+            name: 'Issues',
+            element: <Issues />,
+            url: '/helpdesk/issues'
+        },
+        {
+            name: 'Tickets',
+            element: <Tickets />,
+            url: '/helpdesk/tickets'
+        },
+
+
+
     ]
 }

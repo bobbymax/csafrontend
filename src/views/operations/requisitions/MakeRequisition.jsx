@@ -98,7 +98,7 @@ const MakeRequisition = () => {
     };
   }, []);
 
-  // console.log(dependencies);
+  // console.log(collection);
 
   return (
     <>
