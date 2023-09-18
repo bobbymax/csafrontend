@@ -65,6 +65,8 @@ const Applications = () => {
   // console.log(collection);
 
   useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
     try {
       axios
         .get("applications")
@@ -75,6 +77,10 @@ const Applications = () => {
     } catch (err) {
       console.error(err);
     }
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
   }, []);
 
   return (

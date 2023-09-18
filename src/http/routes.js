@@ -45,6 +45,7 @@ const Requisition = lazy(() => import("../views/inventory/requisitions/Requisiti
 
 // Requests
 const Reservations = lazy(() => import("../views/operations/reservations/Reservations"))
+const MakeReservation = lazy(() => import("../views/operations/reservations/MakeReservation"))
 const Imports = lazy(() => import("../views/administration/imports/Imports"))
 
 // Helpdesk
@@ -223,6 +224,11 @@ export const routes = {
             name: 'Reservations',
             element: <Reservations />,
             url: '/operations/reservations'
+        },
+        {
+            name: 'Make Reservation',
+            element: <MakeReservation />,
+            url: '/operations/make/reservation'
         },
         {
             name: 'Requisition Items',

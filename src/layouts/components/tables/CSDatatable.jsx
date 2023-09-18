@@ -168,6 +168,7 @@ const CSDatatable = ({
             className="cs__exports__btn cs__csv"
             onClick={() => exportCSV(false)}
             data-pr-tooltip="CSV"
+            disabled={exports.length < 1}
           >
             <span className="material-icons-sharp">article</span>
             <p>.CSV</p>
@@ -177,6 +178,7 @@ const CSDatatable = ({
             className="cs__exports__btn cs__xlsx"
             onClick={exportExcel}
             data-pr-tooltip="XLS"
+            disabled={exports.length < 1}
           >
             <span className="material-icons-sharp">receipt_long</span>
             <p>.XLSX</p>
@@ -186,6 +188,7 @@ const CSDatatable = ({
             className="cs__exports__btn cs__pdf"
             onClick={exportPdf}
             data-pr-tooltip="PDF"
+            disabled={exports.length < 1}
           >
             <span className="material-icons-sharp">picture_as_pdf</span>
             <p>.PDF</p>

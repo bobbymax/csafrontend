@@ -58,7 +58,7 @@ const RequisitionItems = () => {
   };
 
   const handleSubmit = (response) => {
-    console.log(response);
+    // console.log(response);
     const { action } = response;
 
     if (action === "alter") {
