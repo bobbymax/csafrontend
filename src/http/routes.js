@@ -52,6 +52,9 @@ const IncidentCategories = lazy(() => import("../views/helpdesk/incident-categor
 const Issues = lazy(() => import("../views/helpdesk/issues/Issues"))
 const Tickets = lazy(() => import("../views/helpdesk/tickets/Tickets"))
 
+// Vehicle Request
+const VehicleRequest = lazy(() => import("../views/fleetmgt/vehicle-request/VehicleRequest"))
+
 export const routes = {
     guest: [
         {
@@ -283,7 +286,12 @@ export const routes = {
             url: '/helpdesk/tickets'
         },
 
-
+        // Vehicle Request
+        {
+            name: 'Vehicle Request',
+            element: <VehicleRequest />,
+            url: '/fleets/vehicle-request'
+        },
 
     ]
 }

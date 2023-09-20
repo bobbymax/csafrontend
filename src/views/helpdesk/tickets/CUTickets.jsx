@@ -58,7 +58,7 @@ const CUTickets = ({
         const body = {
             ...state,
         };
-
+        console.log(body)
         try {
             setIsLoading(true);
             if (isUpdating) {
