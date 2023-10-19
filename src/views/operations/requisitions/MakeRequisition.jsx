@@ -33,7 +33,7 @@ const MakeRequisition = () => {
   ];
 
   const viewRequisition = (raw) => {
-    navigate("/operations/update/requisition", {
+    navigate("/requests/update/requisition", {
       state: {
         dependencies,
         data: raw,
@@ -107,7 +107,7 @@ const MakeRequisition = () => {
           text="Requisitions"
           btnText="Make Requisition"
           handleClick={() =>
-            navigate("/operations/make/requisition", {
+            navigate("/requests/make/requisition", {
               state: {
                 dependencies,
                 data: undefined,

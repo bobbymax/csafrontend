@@ -46,6 +46,8 @@ const Sidebar = () => {
     };
   }, [canvas]);
 
+  // console.log(apps);
+
   return (
     <>
       <aside>
@@ -64,12 +66,17 @@ const Sidebar = () => {
               apps?.map((application, i) => (
                 <Link
                   key={i}
-                  to="#"
+                  to={`${
+                    application?.modules?.length > 0 ? "#" : application?.path
+                  }`}
                   className={`nav__item ${
                     url === application?.path ? "active" : ""
                   }`}
-                  onMouseEnter={() => handleHover(application, "enter")}
-                  // onMouseLeave={() => handleHover(application, "leave")}
+                  onMouseEnter={() =>
+                    application?.modules?.length > 0
+                      ? handleHover(application, "enter")
+                      : handleHover(application, "leave")
+                  }
                   onMouseDown={() => handleHover(application, "leave")}
                 >
                   <div className="link">
@@ -78,11 +85,13 @@ const Sidebar = () => {
                     </span>
                     <p>{application?.name}</p>
                   </div>
-                  <div className="arrow">
-                    <span className="material-icons-sharp link__slide">
-                      navigate_next
-                    </span>
-                  </div>
+                  {application?.modules?.length > 0 && (
+                    <div className="arrow">
+                      <span className="material-icons-sharp link__slide">
+                        navigate_next
+                      </span>
+                    </div>
+                  )}
                 </Link>
               ))}
             <Link to="#" className="nav__item" onClick={() => signout()}>

@@ -62,7 +62,6 @@ const Stocks = () => {
 
       Promise.all(requests)
         .then((responses) => {
-          console.log(responses[0].data?.data)
           setCollection(responses[0].data?.data);
           setDependencies({
             tags: responses[1].data?.data,

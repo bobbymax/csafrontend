@@ -40,7 +40,7 @@ const ViewRequisition = () => {
           setRequisition(response.data);
           Alert.success("Saved!!", response.message);
           setIsLoading(false);
-          navigate("/operations/approve/requisitions");
+          navigate("/requests/approve/requisitions");
         })
         .catch((err) => {
           console.error(err.message);
@@ -53,7 +53,7 @@ const ViewRequisition = () => {
   };
 
   const approve = () => {
-    console.log(requisition);
+    // console.log(requisition);
     Alert.flash(
       "Are you sure?",
       "warning",
@@ -74,7 +74,7 @@ const ViewRequisition = () => {
               setRequisition(response.data);
               Alert.success("Approved!!", response.message);
               setIsLoading(false);
-              navigate("/operations/approve/requisitions");
+              navigate("/requests/approve/requisitions");
             })
             .catch((err) => {
               setIsLoading(false);
@@ -88,7 +88,7 @@ const ViewRequisition = () => {
     });
   };
 
-  console.log(location);
+  // console.log(location);
 
   useEffect(() => {
     if (location.state !== null && location.state?.data) {

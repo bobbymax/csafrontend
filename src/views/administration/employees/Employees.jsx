@@ -17,6 +17,7 @@ const Employees = () => {
   const [show, setShow] = useState(false);
   const [data, setData] = useState(undefined);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [groups, setGroups] = useState([]);
 
   const axios = useAxiosPrivate();
   const navigate = useNavigate();
@@ -103,6 +104,7 @@ const Employees = () => {
         "availabilities",
         "locations",
         "companies",
+        "groups",
       ];
 
       const requests = urls.map((url) => axios.get(url));
@@ -116,6 +118,7 @@ const Employees = () => {
           setStatus(res[4].data.data);
           setLocations(res[5].data.data);
           setVendors(res[6].data.data);
+          setGroups(res[7].data?.data);
         })
         .catch((err) => console.error(err));
     } catch (error) {
@@ -145,6 +148,7 @@ const Employees = () => {
           status,
           locations,
           vendors,
+          groups,
         }}
       />
       <div className="row">

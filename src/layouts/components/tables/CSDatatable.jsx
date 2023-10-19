@@ -19,6 +19,8 @@ const CSDatatable = ({
   view = undefined,
   approve = undefined,
   exportable = false,
+  task = undefined,
+  confirmBooking = undefined,
 }) => {
   const [exports, setExports] = useState([]);
   const dt = useRef(null);
@@ -86,8 +88,13 @@ const CSDatatable = ({
 
   const actionBodyTemplate = (raw) => {
     return (
-      <button type="button" className="table__bttn" onClick={() => manage(raw)}>
+      <button
+        type="button"
+        className="cs__table__btn cs__bg__info"
+        onClick={() => manage(raw)}
+      >
         <span className="material-icons-sharp">settings</span>
+        <p>Manage</p>
       </button>
     );
   };
@@ -100,6 +107,20 @@ const CSDatatable = ({
         onClick={() => print(raw)}
       >
         <span className="material-icons-sharp">print</span>
+      </button>
+    );
+  };
+
+  const assignTaskBodyTemplate = (raw) => {
+    return (
+      <button
+        type="button"
+        className="assign__task__btn bg__dark"
+        onClick={() => task(raw)}
+        disabled={raw?.status !== "pending"}
+      >
+        <span className="material-icons-sharp">person_add</span>
+        Assign
       </button>
     );
   };
@@ -127,6 +148,31 @@ const CSDatatable = ({
       >
         <span className="material-icons-sharp">visibility</span>
         <p>View</p>
+      </button>
+    );
+  };
+
+  const bookingBodyTemplate = (raw) => {
+    const { reservations } = raw?.attributes;
+
+    const accepted =
+      reservations.filter(
+        (reserve) => reserve?.attributes?.accepted !== null
+      )[0] ?? null;
+
+    return (
+      <button
+        type="button"
+        className="cs__table__btn cs__bg__success"
+        onClick={() => confirmBooking(raw)}
+        disabled={
+          accepted === null ||
+          raw?.status === "confirmed" ||
+          raw?.status === "canceled"
+        }
+      >
+        <span className="material-icons-sharp">visibility</span>
+        <p>{raw?.status === "confirmed" ? "Confirmed" : "Confirm"}</p>
       </button>
     );
   };
@@ -238,7 +284,9 @@ const CSDatatable = ({
           />
         ))}
         {manage !== undefined && <Column body={actionBodyTemplate} />}
+        {confirmBooking !== undefined && <Column body={bookingBodyTemplate} />}
         {print !== undefined && <Column body={printBodyTemplate} />}
+        {task !== undefined && <Column body={assignTaskBodyTemplate} />}
         {assign !== undefined && <Column body={assignBodyTemplate} />}
         {view !== undefined && <Column body={viewBodyTemplate} />}
         {approve !== undefined && <Column body={approveBodyTemplate} />}

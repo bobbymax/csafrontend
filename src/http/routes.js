@@ -42,16 +42,30 @@ const ViewRequisition = lazy(() => import("../views/operations/requisitions/View
 const Tasks = lazy(() => import("../views/operations/tasks/Tasks"))
 const TreatRequisitions = lazy(() => import("../views/inventory/requisitions/TreatRequisitions"))
 const Requisition = lazy(() => import("../views/inventory/requisitions/Requisition"))
+const Assign = lazy(() => import("../views/operations/tasks/Assign"))
 
 // Requests
-const Reservations = lazy(() => import("../views/operations/reservations/Reservations"))
-const MakeReservation = lazy(() => import("../views/operations/reservations/MakeReservation"))
 const Imports = lazy(() => import("../views/administration/imports/Imports"))
+const LogisiticsRequests = lazy(() => import("../views/operations/reservations/LogisticsRequests"))
+const MakeBooking = lazy(() => import("../views/operations/reservations/MakeBooking"))
+const Reservations = lazy(() => import("../views/logistics/Reservations"))
+const Reservation = lazy(() => import("../views/operations/reservations/Reservation"))
+const Flights = lazy(() => import("../views/operations/reservations/Flights"))
+const Hotels = lazy(() => import("../views/operations/reservations/Hotels"))
+const ManageBooking = lazy(() => import("../views/logistics/ManageBooking"))
+const MeetingRooms = lazy(() => import('../views/operations/rooms/MeetingRooms'))
+const ScheduleMeeting = lazy(() => import("../views/operations/rooms/ScheduleMeeting"))
+const ViewMeetingSchedule = lazy(() => import("../views/operations/rooms/ViewMeetingSchedule"))
+const HandleMeetingSchedule = lazy(() => import("../views/operations/schedules/HandleMeetingSchedule"))
+const AddSchedule = lazy(() => import("../views/operations/schedules/AddSchedule"))
+const Furnitures = lazy(() => import("../views/operations/furnitures/Furnitures"))
+
 
 // Helpdesk
-const IncidentCategories = lazy(() => import("../views/helpdesk/incident-categories/IncidentCategories"))
-const Issues = lazy(() => import("../views/helpdesk/issues/Issues"))
+const IncidentCategories = lazy(() => import("../views/see-something/incidents/IncidentCategories"))
+const Issues = lazy(() => import("../views/see-something/issues/Issues"))
 const Tickets = lazy(() => import("../views/helpdesk/tickets/Tickets"))
+const Incidents = lazy(() => import("../views/operations/incidents/Incidents"))
 
 // Vehicle Request
 const VehicleRequest = lazy(() => import("../views/fleetmgt/vehicle-request/VehicleRequest"))
@@ -186,6 +200,66 @@ export const routes = {
             url: '/inventory/brands'
         },
         {
+            name: 'Reservations',
+            element: <Reservations />,
+            url: '/logistics/reservations'
+        },
+        {
+            name: 'Reservation',
+            element: <Reservation />,
+            url: '/requests/reservation/details'
+        },
+        {
+            name: 'Flights Reservation',
+            element: <Flights />,
+            url: '/requests/flight/reservations'
+        },
+        {
+            name: 'Hotel Booking',
+            element: <Hotels />,
+            url: '/requests/hotel/bookings'
+        },
+        {
+            name: 'Manage Booking',
+            element: <ManageBooking />,
+            url: '/logistics/manage/reservations'
+        },
+        {
+            name: 'Meeting Rooms',
+            element: <MeetingRooms />,
+            url: '/requests/meeting/rooms'
+        },
+        {
+            name: 'Schedule Meeting',
+            element: <ScheduleMeeting />,
+            url: '/requests/schedule/meeting'
+        },
+        {
+            name: 'Handle Schedule Request',
+            element: <AddSchedule />,
+            url: '/operations/schedule/meeting'
+        },
+        {
+            name: 'View Meeting Schedule',
+            element: <ViewMeetingSchedule />,
+            url: '/view/meeting/schedule'
+        },
+        {
+            name: 'Handle Meeting Schedule Request',
+            element: <HandleMeetingSchedule />,
+            url: '/operations/handle/schedule/request'
+        },
+        {
+            name: 'Furniture Requests',
+            element: <Furnitures />,
+            url: '/requests/furnitures'
+        },
+        {
+            name: 'Incident Reporting',
+            element: <Incidents />,
+            url: '/requests/incidents'
+        },
+        {
             name: 'Stocks',
             element: <Stocks />,
             url: '/inventory/stock'
@@ -218,27 +292,27 @@ export const routes = {
         {
             name: 'Make Requisition',
             element: <MakeRequisition />,
-            url: '/operations/requisitions'
-        },
-        {
-            name: 'Reservations',
-            element: <Reservations />,
-            url: '/operations/reservations'
-        },
-        {
-            name: 'Make Reservation',
-            element: <MakeReservation />,
-            url: '/operations/make/reservation'
+            url: '/requests/requisitions'
         },
         {
             name: 'Requisition Items',
             element: <RequisitionItems />,
-            url: '/operations/make/requisition'
+            url: '/requests/make/requisition'
         },
         {
             name: 'Update Requisitions',
             element: <RequisitionItems />,
-            url: '/operations/update/requisition'
+            url: '/requests/update/requisition'
+        },
+        {
+            name: "Logistics Requests",
+            element: <LogisiticsRequests />,
+            url: "/requests/make/booking"
+        },
+        {
+            name: "Make Logisitics Booking",
+            element: <MakeBooking />,
+            url: "/requests/reserve/booking"
         },
         {
             name: 'Requisitions',
@@ -258,12 +332,12 @@ export const routes = {
         {
             name: 'View Requisition',
             element: <ViewRequisition />,
-            url: '/operations/view/requisition'
+            url: '/requests/view/requisition'
         },
         {
             name: 'Approve Requisitions',
             element: <ApproveRequisitions />,
-            url: '/operations/approve/requisitions'
+            url: '/requests/approve/requisitions'
         },
         {
             name: 'Handle Requisition',
@@ -273,18 +347,23 @@ export const routes = {
         {
             name: 'Tasks',
             element: <Tasks />,
-            url: '/operations/tasks'
+            url: '/helpdesk/tasks'
+        },
+        {
+            name: 'Assign Tasks',
+            element: <Assign />,
+            url: '/helpdesk/assign/tasks'
         },
         // Helpdesk
         {
             name: 'Incident Categories',
             element: <IncidentCategories />,
-            url: '/helpdesk/incident/categories'
+            url: '/see-something/incident-categories'
         },
         {
             name: 'Issues',
             element: <Issues />,
-            url: '/helpdesk/issues'
+            url: '/see-something/issues'
         },
         {
             name: 'Tickets',

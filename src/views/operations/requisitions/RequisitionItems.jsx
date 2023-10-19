@@ -127,7 +127,7 @@ const RequisitionItems = () => {
             const response = res.data;
             Alert.success("Updated!!", response.message);
             reset();
-            navigate("/operations/requisitions");
+            navigate("/requests/requisitions");
           })
           .catch((err) => {
             setIsLoading(false);
@@ -140,7 +140,7 @@ const RequisitionItems = () => {
             const response = res.data;
             Alert.success("Done!!", response.message);
             reset();
-            navigate("/operations/requisitions");
+            navigate("/requests/requisitions");
           })
           .catch((err) => {
             setIsLoading(false);

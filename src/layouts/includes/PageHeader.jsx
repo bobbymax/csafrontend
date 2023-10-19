@@ -1,6 +1,7 @@
 import CSButton from "../components/forms/CSButton";
 
 const PageHeader = ({
+  md = 12,
   icon = "widgets",
   text,
   btnText = "",
@@ -10,7 +11,7 @@ const PageHeader = ({
   disabled = false,
 }) => {
   return (
-    <div className="col-md-12 mb-4">
+    <div className={`col-md-${md} mb-4`}>
       <div className="page__header">
         <div className="page__header__name">
           <span className="material-icons-sharp">{icon}</span>

@@ -3,12 +3,23 @@ export const splitRoute = (pathname) => {
   return "/" + url;
 };
 
-export const unique = () => {
+export const unique = (prefix = "") => {
   const min = 10000;
   const max = 90000;
   const num = Math.floor(Math.random() * max) + min;
-  return num;
+  return prefix + num;
 };
+
+export const generateRandomIntegers = (prefix, number) => {
+  const uniqueRandomIntegers = new Set()
+
+  while (uniqueRandomIntegers.size < number) {
+    const randomInteger = Math.floor(Math.random() * 1000000)
+    uniqueRandomIntegers.add(prefix + randomInteger)
+  }
+
+  return Array.from(uniqueRandomIntegers)
+}
 
 export const inputTypes = [
   { key: "text", label: "Text" },

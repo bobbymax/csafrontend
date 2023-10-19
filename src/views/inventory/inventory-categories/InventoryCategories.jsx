@@ -78,8 +78,6 @@ const InventoryCategories = () => {
     };
   }, []);
 
-  //   console.log(collection);
-
   return (
     <>
       <CUInventoryCategories

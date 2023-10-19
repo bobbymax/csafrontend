@@ -10,6 +10,7 @@ const Applications = () => {
   const [show, setShow] = useState(false);
   const [data, setData] = useState(undefined);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [dependencies, setDependencies] = useState({});
 
   const axios = useAxiosPrivate();
 
@@ -62,21 +63,28 @@ const Applications = () => {
     setShow(true);
   };
 
-  // console.log(collection);
-
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
+
     try {
-      axios
-        .get("applications")
-        .then((res) => {
-          setCollection(res.data?.data);
+      const urls = ["applications", "departments", "groups"];
+
+      const requests = urls.map((url) => axios.get(url));
+
+      Promise.all(requests)
+        .then((responses) => {
+          setCollection(responses[0].data?.data);
+          setDependencies({
+            departments: responses[1].data?.data,
+            groups: responses[2].data?.data,
+          });
         })
-        .catch((er) => console.error(er.message));
-    } catch (err) {
-      console.error(err);
+        .catch((err) => console.error(err));
+    } catch (error) {
+      console.error(error);
     }
+
     return () => {
       isMounted = false;
       controller.abort();
@@ -92,6 +100,7 @@ const Applications = () => {
         handleSubmit={handleSubmit}
         isUpdating={isUpdating}
         data={data}
+        dependencies={{ ...dependencies }}
       />
       <div className="row">
         <PageHeader

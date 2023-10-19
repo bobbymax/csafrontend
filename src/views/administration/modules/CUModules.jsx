@@ -7,6 +7,7 @@ import CSTextarea from "../../../layouts/components/forms/CSTextarea";
 import CSSelect from "../../../layouts/components/forms/CSSelect";
 import CSSelectOptions from "../../../layouts/components/forms/CSSelectOptions";
 import CSButton from "../../../layouts/components/forms/CSButton";
+import CSBox from "../../../layouts/components/forms/CSBox";
 
 const CUModules = ({
   title = "",
@@ -31,6 +32,11 @@ const CUModules = ({
   const [state, setState] = useState(initialState);
   const [isLoading, setIsLoading] = useState(false);
   const [applications, setApplications] = useState([]);
+  const [departments, setDepartments] = useState([]);
+  const [groups, setGroups] = useState([]);
+
+  const [sGroups, setSGroups] = useState([]);
+  const [sDepartments, setSDepartments] = useState([]);
 
   const axios = useAxiosPrivate();
 
@@ -39,6 +45,8 @@ const CUModules = ({
 
     const body = {
       ...state,
+      departments: sDepartments,
+      groups: sGroups,
     };
 
     try {
@@ -89,13 +97,44 @@ const CUModules = ({
     handleClose();
   };
 
+  const handleCheckboxChange = (e) => {
+    const isChecked = e.target.checked;
+    const value = parseInt(e.target.value);
+
+    if (isChecked) {
+      // add to array
+      setSDepartments([...sDepartments, value]);
+    } else {
+      // remove from array
+      setSDepartments(sDepartments.filter((dept) => dept !== value));
+    }
+  };
+
+  const handleCheckboxGroupChange = (e) => {
+    const isChecked = e.target.checked;
+    const value = parseInt(e.target.value);
+
+    if (isChecked) {
+      // add to array
+      setSGroups([...sGroups, value]);
+    } else {
+      // remove from array
+      setSGroups(sGroups.filter((group) => group !== value));
+    }
+  };
+
   const reset = () => {
     setIsLoading(false);
     setState(initialState);
+    setSDepartments([]);
+    setSGroups([]);
   };
 
   useEffect(() => {
     if (data !== undefined) {
+      let grps = [];
+      let depts = [];
+
       setState({
         ...state,
         id: data?.id,
@@ -106,14 +145,29 @@ const CUModules = ({
         path: data?.path,
         description: data?.description,
       });
+
+      data?.attributes?.groups?.map((group) => grps.push(parseInt(group?.id)));
+      data?.attributes?.departments?.map((dept) =>
+        depts.push(parseInt(dept?.id))
+      );
+
+      setSGroups(grps);
+      setSDepartments(depts);
     }
   }, [data]);
 
   useEffect(() => {
-    if (dependencies !== undefined && dependencies?.apps) {
-      const { apps } = dependencies;
+    if (
+      dependencies !== undefined &&
+      dependencies?.apps &&
+      dependencies?.departments &&
+      dependencies?.groups
+    ) {
+      const { apps, departments, groups } = dependencies;
 
       setApplications(apps);
+      setDepartments(departments);
+      setGroups(groups);
     }
   }, [dependencies]);
 
@@ -188,8 +242,47 @@ const CUModules = ({
             onChange={(e) =>
               setState({ ...state, description: e.target.value })
             }
+            rows={5}
           />
         </div>
+
+        <div className="col-md-12 mb-3">
+          <p className="cs__form-label">Departments</p>
+          <div className="panel">
+            <div className="row">
+              {departments?.map((department, i) => (
+                <div key={i} className="col-3 col-sm-4 col-lg-3">
+                  <CSBox
+                    id={department?.id}
+                    label={department?.code}
+                    value={department?.id}
+                    onChange={handleCheckboxChange}
+                    checked={sDepartments.includes(parseInt(department?.id))}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="col-md-12 mb-4">
+          <p className="cs__form-label">Groups</p>
+          <div className="panel">
+            <div className="row">
+              {groups?.map((group, i) => (
+                <div key={i} className="col-3 col-sm-4 col-lg-3">
+                  <CSBox
+                    id={group?.id}
+                    label={group?.name}
+                    value={group?.id}
+                    onChange={handleCheckboxGroupChange}
+                    checked={sGroups.includes(parseInt(group?.id))}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         <div className="col-md-12">
           <CSButton
             text="Submit"
@@ -205,7 +298,9 @@ const CUModules = ({
               state.icon === "" ||
               state.path === "" ||
               state.description === "" ||
-              state.application_id === 0
+              state.application_id === 0 ||
+              sDepartments?.length < 1 ||
+              sGroups?.length < 1
             }
           />
         </div>

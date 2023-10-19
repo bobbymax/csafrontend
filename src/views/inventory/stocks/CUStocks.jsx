@@ -165,13 +165,13 @@ const CUStocks = () => {
           </div>
           <div className="col-md-5 mb-4">
             <CSSelect
-              label="Department"
+              label="Owner"
               value={state.department_id}
               onChange={(e) =>
                 setState({ ...state, department_id: parseInt(e.target.value) })
               }
             >
-              <CSSelectOptions value={0} label="Select Department" disabled />
+              <CSSelectOptions value={0} label="Select Owner" disabled />
               {dependencies?.departments?.map((dept) => (
                 <CSSelectOptions
                   key={dept?.id}

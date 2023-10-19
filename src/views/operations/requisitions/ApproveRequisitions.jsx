@@ -58,13 +58,13 @@ const ApproveRequisitions = () => {
   const viewReq = (req) => {
     console.log(req);
 
-    navigate("/operations/view/requisition", {
+    navigate("/requests/view/requisition", {
       state: {
         data: req,
       },
     });
 
-    // /operations/view/requisition
+    // /requests/view/requisition
   };
 
   useEffect(() => {

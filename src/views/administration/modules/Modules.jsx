@@ -7,7 +7,7 @@ import CUModules from "./CUModules";
 
 const Modules = () => {
   const [collection, setCollection] = useState([]);
-  const [apps, setApps] = useState([]);
+  const [dependencies, setDependencies] = useState({});
   const [show, setShow] = useState(false);
   const [data, setData] = useState(undefined);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -76,29 +76,32 @@ const Modules = () => {
   };
 
   useEffect(() => {
-    try {
-      axios
-        .get("modules")
-        .then((res) => {
-          setCollection(res.data?.data);
-        })
-        .catch((er) => console.error(er.message));
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
+    let isMounted = true;
+    const controller = new AbortController();
 
-  useEffect(() => {
     try {
-      axios
-        .get("applications")
-        .then((res) => {
-          setApps(res.data?.data);
+      const urls = ["modules", "applications", "departments", "groups"];
+
+      const requests = urls.map((url) => axios.get(url));
+
+      Promise.all(requests)
+        .then((responses) => {
+          setCollection(responses[0].data?.data);
+          setDependencies({
+            apps: responses[1].data?.data,
+            departments: responses[2].data?.data,
+            groups: responses[3].data?.data,
+          });
         })
-        .catch((er) => console.error(er.message));
-    } catch (err) {
-      console.error(err);
+        .catch((err) => console.error(err));
+    } catch (error) {
+      console.error(error);
     }
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
   }, []);
 
   return (
@@ -110,7 +113,7 @@ const Modules = () => {
         handleSubmit={handleSubmit}
         isUpdating={isUpdating}
         data={data}
-        dependencies={{ apps }}
+        dependencies={{ ...dependencies }}
       />
       <div className="row">
         <PageHeader

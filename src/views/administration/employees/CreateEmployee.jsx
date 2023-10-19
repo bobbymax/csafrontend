@@ -6,6 +6,7 @@ import CSInput from "../../../layouts/components/forms/CSInput";
 import CSSelect from "../../../layouts/components/forms/CSSelect";
 import CSSelectOptions from "../../../layouts/components/forms/CSSelectOptions";
 import CSButton from "../../../layouts/components/forms/CSButton";
+import CSBox from "../../../layouts/components/forms/CSBox";
 
 const CreateEmployee = ({
   title = "",
@@ -35,6 +36,7 @@ const CreateEmployee = ({
   const [state, setState] = useState(initialState);
   const [isLoading, setIsLoading] = useState(false);
   const [dependants, setDependants] = useState({});
+  const [sGroups, setSGroups] = useState([]);
 
   const axios = useAxiosPrivate();
 
@@ -43,6 +45,7 @@ const CreateEmployee = ({
 
     const body = {
       ...state,
+      groups: sGroups,
     };
 
     try {
@@ -88,6 +91,19 @@ const CreateEmployee = ({
     }
   };
 
+  const handleCheckboxGroupChange = (e) => {
+    const isChecked = e.target.checked;
+    const value = parseInt(e.target.value);
+
+    if (isChecked) {
+      // add to array
+      setSGroups([...sGroups, value]);
+    } else {
+      // remove from array
+      setSGroups(sGroups.filter((group) => group !== value));
+    }
+  };
+
   const handleModalClose = () => {
     reset();
     handleClose();
@@ -96,6 +112,7 @@ const CreateEmployee = ({
   const reset = () => {
     setIsLoading(false);
     setState(initialState);
+    setSGroups([]);
   };
 
   useEffect(() => {
@@ -283,6 +300,25 @@ const CreateEmployee = ({
             ))}
           </CSSelect>
         </div>
+        <div className="col-md-12 mb-5">
+          <p className="cs__form-label">Groups</p>
+          <div className="panel">
+            <div className="row">
+              {dependants?.groups?.map((group, i) => (
+                <div key={i} className="col-6 col-sm-6 col-lg-6 mb-2">
+                  <CSBox
+                    id={group?.id}
+                    label={group?.name}
+                    value={group?.id}
+                    onChange={handleCheckboxGroupChange}
+                    checked={sGroups.includes(parseInt(group?.id))}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         <div className="col-md-12">
           <CSButton
             text="Submit"
