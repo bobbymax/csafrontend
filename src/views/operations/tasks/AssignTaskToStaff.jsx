@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import Modal from "../../../layouts/components/modals/Modal";
 import CSForm from "../../../layouts/components/forms/CSForm";
-import CSInput from "../../../layouts/components/forms/CSInput";
 import CSButton from "../../../layouts/components/forms/CSButton";
 import CSSelect from "../../../layouts/components/forms/CSSelect";
 import CSSelectOptions from "../../../layouts/components/forms/CSSelectOptions";
@@ -16,6 +15,7 @@ const AssignTaskToStaff = ({
   handleSubmit = undefined,
   data = undefined,
   dependencies = undefined,
+  departmentId = 0,
 }) => {
   const initialState = {
     user_id: 0,
@@ -70,11 +70,12 @@ const AssignTaskToStaff = ({
   useEffect(() => {
     if (dependencies !== undefined) {
       const { users } = dependencies;
-      setStaff(users ?? []);
+      const members = users.filter(
+        (staff) => parseInt(staff.department_id) === departmentId
+      );
+      setStaff(members ?? []);
     }
   }, [dependencies]);
-
-  //   console.log(staff);
 
   useEffect(() => {
     if (data !== undefined) {

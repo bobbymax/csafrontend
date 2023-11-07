@@ -4,9 +4,11 @@ import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import CSDatatable from "../../../layouts/components/tables/CSDatatable";
 import AssignTaskToStaff from "./AssignTaskToStaff";
 import Alert from "../../../services/alert";
+import { useAppContext } from "../../../context/AuthProvider";
 
 const Assign = () => {
   const axios = useAxiosPrivate();
+  const { auth } = useAppContext();
 
   const [collection, setCollection] = useState([]);
   const [users, setUsers] = useState([]);
@@ -72,7 +74,14 @@ const Assign = () => {
 
       Promise.all(requests)
         .then((responses) => {
-          setCollection(responses[0].data?.data);
+          const response = responses[0].data?.data;
+          setCollection(
+            response.filter(
+              (task) =>
+                parseInt(task.department_id) ===
+                parseInt(auth?.user?.department_id)
+            )
+          );
           setUsers(responses[1].data?.data);
         })
         .catch((err) => console.error(err));
@@ -86,8 +95,6 @@ const Assign = () => {
     };
   }, []);
 
-  //   console.log(collection, users);
-
   return (
     <>
       <AssignTaskToStaff
@@ -97,6 +104,7 @@ const Assign = () => {
         handleSubmit={handleSubmit}
         data={data}
         dependencies={{ users }}
+        departmentId={parseInt(auth?.user?.department_id)}
       />
 
       <PageHeader text="Assign Tasks" icon="assignment" />

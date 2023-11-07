@@ -21,6 +21,7 @@ const CSDatatable = ({
   exportable = false,
   task = undefined,
   confirmBooking = undefined,
+  rowsPerPage = 10,
 }) => {
   const [exports, setExports] = useState([]);
   const dt = useRef(null);
@@ -103,7 +104,7 @@ const CSDatatable = ({
     return (
       <button
         type="button"
-        className="table__print__btn bg__dark"
+        className="table__bttn bg__dark"
         onClick={() => print(raw)}
       >
         <span className="material-icons-sharp">print</span>
@@ -269,7 +270,7 @@ const CSDatatable = ({
         ref={dt}
         filters={filters}
         paginator
-        rows={10}
+        rows={rowsPerPage}
         rowsPerPageOptions={[2, 10, 25, 50, 100]}
         totalRecords={data?.length}
         scrollable

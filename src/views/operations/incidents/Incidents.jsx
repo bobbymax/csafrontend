@@ -16,33 +16,24 @@ const Incidents = () => {
 
   const columns = [
     {
-      field: "user",
-      header: "Staff",
-      isSortable: true,
-    },
-    {
-      field: "issue",
+      field: "attributes.issue.name",
       header: "Issue",
       isSortable: true,
     },
     {
-      field: "department",
+      field: "attributes.department.code",
       header: "Department",
       isSortable: true,
     },
     {
-      field: "location",
+      field: "attributes.location",
       header: "Location",
       isSortable: true,
     },
     {
-      field: "floor",
+      field: "attributes.floor",
       header: "Floor",
       isSortable: true,
-    },
-    {
-      field: "description",
-      header: "Description",
     },
     {
       field: "status",
@@ -125,7 +116,10 @@ const Incidents = () => {
 
       Promise.all(requests)
         .then((responses) => {
-          setCollection(responses[0].data?.data);
+          const incidents = responses[0].data?.data;
+          setCollection(
+            incidents.filter((incident) => incident.category === "incident")
+          );
           setDependencies({
             users: responses[1].data?.data,
             departments: responses[2].data?.data,

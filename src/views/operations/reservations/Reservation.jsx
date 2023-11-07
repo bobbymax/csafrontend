@@ -18,8 +18,8 @@ const Reservation = () => {
   const confirmItinerary = (itinerary) => {
     const url =
       booking?.type === "flight"
-        ? "/requests/flight/reservations"
-        : "/requests/hotel/bookings";
+        ? "/logistics/flight/reservations"
+        : "/logistics/hotel/bookings";
 
     const body = {
       status: "accepted",

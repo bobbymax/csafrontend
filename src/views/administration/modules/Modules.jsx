@@ -104,6 +104,12 @@ const Modules = () => {
     };
   }, []);
 
+  // useEffect(() => {
+  //   const collect = new ApiHttp("modules");
+
+  //   console.log(collect);
+  // }, []);
+
   return (
     <>
       <CUModules

@@ -76,12 +76,26 @@ export const convertToJson = (headers, data) => {
   return rows;
 };
 
-export const formatSelectOptions = (data, value, label) =>
+export const formatCurrency = (fig, label = false) => {
+  let currency = Intl.NumberFormat("en-US");
+  return `${label ? 'NGN ' : ''}${currency.format(fig)}`;
+};
+
+export const formatSelectOptions = (data, value, label, arr =[]) =>
   data?.length > 0 &&
   data.map((val) => ({
     value: val[value],
     label: val[label],
+    arr: val[arr],
     raw: {
       ...data[0]
     }
   }));
+
+  // {
+  //   id: 9,
+  //   title: 'Happy Hour',
+  //   start: new Date(2015, 3, 12, 17, 0, 0, 0),
+  //   end: new Date(2015, 3, 12, 17, 30, 0, 0),
+  //   desc: 'Most important meal of the day',
+  // },

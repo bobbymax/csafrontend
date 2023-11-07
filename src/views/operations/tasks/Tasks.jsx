@@ -7,10 +7,12 @@ import {
   TaskContainer,
 } from "../../../assets/components/cards/tasks";
 import { cols } from "../../../assets/data/api";
+import { useAppContext } from "../../../context/AuthProvider";
 
 const Tasks = () => {
   const [collection, setCollection] = useState([]);
 
+  const { auth } = useAppContext();
   const axios = useAxiosPrivate();
   const navigate = useNavigate();
 
@@ -26,7 +28,8 @@ const Tasks = () => {
       axios
         .get("tasks")
         .then((res) => {
-          setCollection(res.data.data);
+          const response = res.data.data;
+          setCollection(response);
         })
         .catch((err) => {
           console.error(err.message);
@@ -40,8 +43,6 @@ const Tasks = () => {
       controller.abort();
     };
   }, []);
-
-  //   console.log(collection);
 
   return (
     <>

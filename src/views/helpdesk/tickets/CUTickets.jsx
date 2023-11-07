@@ -51,10 +51,6 @@ const CUTickets = ({
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    // if (forOthers === false) {
-    //     setState(prevState => ({ ...prevState, user_id: auth.user.id }))
-    // }
-
     const body = {
       ...state,
     };

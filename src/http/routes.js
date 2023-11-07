@@ -18,16 +18,15 @@ const Employees = lazy(() => import("../views/administration/employees/Employees
 const ManageEmployee = lazy(() => import("../views/administration/employees/ManageEmployee"))
 
 // Inventory
-const InventoryCategories = lazy(() => import("../views/inventory/inventory-categories/InventoryCategories"))
-const StockCategories = lazy(() => import("../views/inventory/stock-categories/StockCategories"))
-const StockTypes = lazy(() => import("../views/inventory/stock-types/StockTypes"))
-const Tags = lazy(() => import("../views/inventory/tags/Tags"))
 const Seatings = lazy(() => import("../views/inventory/seatings/Seatings"))
-const Brands = lazy(() => import("../views/inventory/brands/Brands"))
 const Stocks = lazy(() => import("../views/inventory/stocks/Stocks"))
 const CUStocks = lazy(() => import("../views/inventory/stocks/CUStocks"))
 const StockItems = lazy(() => import("../views/inventory/items/StockItems"))
 const CUStockItem = lazy(() => import("../views/inventory/items/CUStockItem"))
+const StockDependencies = lazy(() => import("../views/inventory/dependencies/StockDependencies"))
+const Supplies = lazy(() => import("../views/inventory/supplies/Supplies"))
+const GenerateMRV = lazy(() => import("../views/inventory/supplies/GenerateMRV"))
+const PrintMRV = lazy(() => import("../views/inventory/supplies/PrintMRV"))
 
 const Rooms = lazy(() => import("../views/inventory/rooms/Rooms"))
 const HallCategories = lazy(() => import("../views/inventory/halls/HallCategories"))
@@ -155,19 +154,9 @@ export const routes = {
             url: '/administration/manage/staff'
         },
         {
-            name: 'Inventory Categories',
-            element: <InventoryCategories />,
-            url: '/inventory/parent/categories'
-        },
-        {
-            name: 'Stock Categories',
-            element: <StockCategories />,
-            url: '/inventory/stock/categories'
-        },
-        {
-            name: 'Stock Types',
-            element: <StockTypes />,
-            url: '/inventory/stock/types'
+            name: 'Stock Dependencies',
+            element: <StockDependencies />,
+            url: '/inventory/stock/dependencies'
         },
         {
             name: 'Hall Categories',
@@ -175,14 +164,24 @@ export const routes = {
             url: '/inventory/hall/categories'
         },
         {
-            name: 'Stock Types',
-            element: <Tags />,
-            url: '/inventory/tags'
-        },
-        {
             name: 'Wings',
             element: <Wings />,
             url: '/inventory/wings'
+        },
+        {
+            name: 'Supplies',
+            element: <Supplies />,
+            url: '/inventory/supplies'
+        },
+        {
+            name: 'Generate MRV',
+            element: <GenerateMRV />,
+            url: '/inventory/generate/mrv'
+        },
+        {
+            name: 'Print MRV',
+            element: <PrintMRV />,
+            url: '/inventory/mrv/print'
         },
         {
             name: 'Rooms',
@@ -193,11 +192,6 @@ export const routes = {
             name: 'Seating Arrangements',
             element: <Seatings />,
             url: '/inventory/seatings'
-        },
-        {
-            name: 'Brands',
-            element: <Brands />,
-            url: '/inventory/brands'
         },
         {
             name: 'Reservations',
@@ -212,12 +206,12 @@ export const routes = {
         {
             name: 'Flights Reservation',
             element: <Flights />,
-            url: '/requests/flight/reservations'
+            url: '/logistics/flight/reservations'
         },
         {
             name: 'Hotel Booking',
             element: <Hotels />,
-            url: '/requests/hotel/bookings'
+            url: '/logistics/hotel/bookings'
         },
         {
             name: 'Manage Booking',
@@ -347,28 +341,28 @@ export const routes = {
         {
             name: 'Tasks',
             element: <Tasks />,
-            url: '/helpdesk/tasks'
+            url: '/tasks/my/tasks'
         },
         {
             name: 'Assign Tasks',
             element: <Assign />,
-            url: '/helpdesk/assign/tasks'
+            url: '/tasks/assign/task'
         },
         // Helpdesk
         {
             name: 'Incident Categories',
             element: <IncidentCategories />,
-            url: '/see-something/incident-categories'
+            url: '/helpdesk/incident-categories'
         },
         {
             name: 'Issues',
             element: <Issues />,
-            url: '/see-something/issues'
+            url: '/helpdesk/issues'
         },
         {
             name: 'Tickets',
             element: <Tickets />,
-            url: '/helpdesk/tickets'
+            url: '/requests/tickets'
         },
 
         // Vehicle Request

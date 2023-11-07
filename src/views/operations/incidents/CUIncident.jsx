@@ -9,6 +9,7 @@ import CSInput from "../../../layouts/components/forms/CSInput";
 import CSTextarea from "../../../layouts/components/forms/CSTextarea";
 import CSBox from "../../../layouts/components/forms/CSBox";
 import CSButton from "../../../layouts/components/forms/CSButton";
+import { unique } from "../../../services/helpers";
 
 const CUIncident = ({
   title = "",
@@ -38,7 +39,6 @@ const CUIncident = ({
   };
 
   const [state, setState] = useState(initialState);
-  const [departments, setDepartments] = useState([]);
   const [users, setUsers] = useState([]);
   const [issues, setIssues] = useState([]);
   const [locations, setLocations] = useState([]);
@@ -54,6 +54,9 @@ const CUIncident = ({
 
     const body = {
       ...state,
+      code: unique("INC"),
+      department_id: auth?.user?.department_id,
+      user_id: state.user_id < 1 ? auth?.user?.id : state.user_id,
     };
 
     try {
@@ -103,10 +106,15 @@ const CUIncident = ({
   };
 
   useEffect(() => {
-    if (dependencies !== undefined && dependencies?.departments) {
-      const { departments, issues, users, locations, floors } = dependencies;
+    if (
+      dependencies !== undefined &&
+      dependencies?.issues &&
+      dependencies?.users &&
+      dependencies?.locations &&
+      dependencies?.floors
+    ) {
+      const { issues, users, locations, floors } = dependencies;
 
-      setDepartments(departments);
       setIssues(issues);
       setUsers(users);
       setLocations(locations);
@@ -143,7 +151,7 @@ const CUIncident = ({
         noBorder
         noHeader
       >
-        <div className="col-md-6 mb-3">
+        {/* <div className="col-md-6 mb-3">
           <CSSelect
             label="Department"
             value={state.department_id}
@@ -163,11 +171,11 @@ const CUIncident = ({
               />
             ))}
           </CSSelect>
-        </div>
+        </div> */}
 
-        <div className="col-md-6 mb-3">
+        <div className="col-md-12 mb-3">
           <CSSelect
-            label="Location"
+            label="Where did you see this Incident?"
             value={state.location_id}
             onChange={(e) =>
               setState({ ...state, location_id: parseInt(e.target.value) })
@@ -189,7 +197,7 @@ const CUIncident = ({
             type="number"
             step="1"
             id="officeId"
-            label="Office Number"
+            label="Office Number Close to Incident"
             placeholder="Enter Office Number"
             value={state.office_no}
             onChange={(e) => setState({ ...state, office_no: e.target.value })}
@@ -221,7 +229,7 @@ const CUIncident = ({
 
         <div className="col-md-12 mb-3">
           <CSSelect
-            label="Issue"
+            label="What complaint category does it fall other?"
             value={state.issue_id}
             onChange={(e) =>
               setState({ ...state, issue_id: parseInt(e.target.value) })
@@ -240,7 +248,7 @@ const CUIncident = ({
         <div className="col-md-12 mb-3">
           <CSTextarea
             id="description"
-            label="Description"
+            label="Elaborate what you saw"
             placeholder="Enter Description"
             value={state.description}
             onChange={(e) =>
@@ -253,7 +261,7 @@ const CUIncident = ({
           <CSInput
             id="upload"
             type="file"
-            label="Upload What You Saw"
+            label="Upload if you took a picture"
             value={state.attachment}
             onChange={(e) => setState({ ...state, attachment: e.target.value })}
           />
@@ -297,7 +305,6 @@ const CUIncident = ({
             isLoading={isLoading}
             block
             disabled={
-              state.department_id === 0 ||
               state.location_id === 0 ||
               state.description === "" ||
               state.issue_id === 0

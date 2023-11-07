@@ -14,15 +14,24 @@ export const ContextProvider = ({ children }) => {
     
     useEffect(() => {
       if (auth?.user && auth?.token && auth?.user) {
+        const loggedInUser = auth?.user
+        const {groups} = loggedInUser
+
+        let grps = []
+
+        groups.map(grp => grps.push(parseInt(grp?.id)))
+
         try {
           axios.get("applications")
-        .then(res => setApps(res.data.data))
-        .catch(err => console.error(err.message))
+          .then(res => {
+            const response = res.data.data
+            // console.log(response)
+            setApps(response)
+          })
+          .catch(err => console.error(err.message))
         } catch (err) {
           console.error(err)
         }
-
-        const {groups} = auth?.user
 
         setGroups(groups)
       }

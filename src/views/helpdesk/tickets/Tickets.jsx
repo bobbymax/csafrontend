@@ -125,7 +125,10 @@ const Tickets = () => {
 
       Promise.all(requests)
         .then((responses) => {
-          setCollection(responses[0].data?.data);
+          const tickets = responses[0].data?.data;
+          setCollection(
+            tickets.filter((incident) => incident.category === "support")
+          );
           setDependencies({
             users: responses[1].data?.data,
             departments: responses[2].data?.data,
@@ -149,7 +152,7 @@ const Tickets = () => {
   return (
     <>
       <CUTickets
-        title="Create a Ticket"
+        title="Open Support Ticket"
         show={show}
         handleClose={handleClose}
         handleSubmit={handleSubmit}
@@ -160,7 +163,9 @@ const Tickets = () => {
       <div className="row">
         <PageHeader
           text="Tickets"
-          btnText="Create a Ticket"
+          btnIcon="support"
+          icon="support_agent"
+          btnText="Open Support Ticket"
           handleClick={() => setShow(true)}
         />
         <div className="col-md-12">
