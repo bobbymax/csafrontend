@@ -3,7 +3,7 @@ import logo from "../../assets/images/logo.png";
 import loginLogo from "../../assets/images/login-logo.png";
 import csImg from "../../assets/images/cs.png";
 import { Player } from "@lottiefiles/react-lottie-player";
-import loaderAni from "../../assets/frontpageani.json";
+import loaderAni from "../../assets/lpanimation.json";
 
 const Guest = ({ children }) => {
   return (
