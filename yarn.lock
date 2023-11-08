@@ -500,7 +500,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-proposal-private-property-in-object@npm:^7.16.0":
+"@babel/plugin-proposal-private-property-in-object@npm:^7.16.0, @babel/plugin-proposal-private-property-in-object@npm:^7.21.11":
   version: 7.21.11
   resolution: "@babel/plugin-proposal-private-property-in-object@npm:7.21.11"
   dependencies:
@@ -5419,6 +5419,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "csa@workspace:."
   dependencies:
+    "@babel/plugin-proposal-private-property-in-object": ^7.21.11
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
     "@lottiefiles/react-lottie-player": ^3.5.3
