@@ -46,17 +46,16 @@ const Login = () => {
       setIsLoading(false);
       navigate(from, { replace: true });
     } catch (error) {
-      console.log(error);
-
-      if (!error?.response) {
-        setErrorMsg("No Server Response");
-      } else if (error?.response?.status === 400) {
-        setErrorMsg("Missing Username or Password");
-      } else if (error.response?.status === 401) {
-        setErrorMsg("Unauthorized");
-      } else {
-        setErrorMsg("Login Failed");
-      }
+      // console.log(error);
+      // if (!error?.response) {
+      //   setErrorMsg("No Server Response");
+      // } else if (error?.response?.status === 400) {
+      //   setErrorMsg("Missing Username or Password");
+      // } else if (error.response?.status === 401) {
+      //   setErrorMsg("Unauthorized");
+      // } else {
+      //   setErrorMsg("Login Failed");
+      // }
     }
   };
 
