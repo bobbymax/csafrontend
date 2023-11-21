@@ -65,6 +65,9 @@ const IncidentCategories = lazy(() => import("../views/see-something/incidents/I
 const Issues = lazy(() => import("../views/see-something/issues/Issues"))
 const Tickets = lazy(() => import("../views/helpdesk/tickets/Tickets"))
 const Incidents = lazy(() => import("../views/operations/incidents/Incidents"))
+const Complaints = lazy(() => import("../views/see-something/incidents/Complaints"))
+const SupportTypes = lazy(() => import("../views/helpdesk/types/SupportTypes"))
+const ManageComplaint = lazy(() => import("../views/see-something/incidents/ManageComplaint"))
 
 // Vehicle Request
 const VehicleRequest = lazy(() => import("../views/fleetmgt/vehicle-request/VehicleRequest"))
@@ -249,9 +252,24 @@ export const routes = {
             url: '/requests/furnitures'
         },
         {
+            name: 'Support Types',
+            element: <SupportTypes />,
+            url: '/helpdesk/support/types'
+        },
+        {
+            name: 'Manage Complaint',
+            element: <ManageComplaint />,
+            url: '/helpdesk/manage/complaint'
+        },
+        {
             name: 'Incident Reporting',
             element: <Incidents />,
             url: '/requests/incidents'
+        },
+        {
+            name: 'Incidents',
+            element: <Complaints />,
+            url: '/helpdesk/complaints'
         },
         {
             name: 'Stocks',

@@ -1,6 +1,6 @@
 import CryptoJS from "crypto-js";
 
-const SECRET_PHRASE = "x_4rY321wuqu((4eM,833RUBY//ewBB"
+const SECRET_PHRASE = process.env.REACT_APP_SESSION_TOKEN;
 
 const encrypt = (text) => {
     return CryptoJS.AES.encrypt(JSON.stringify(text), SECRET_PHRASE).toString();

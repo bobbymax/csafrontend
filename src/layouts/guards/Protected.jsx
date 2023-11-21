@@ -7,10 +7,46 @@ import Wrapper from "../includes/Wrapper";
 import Sidebar from "../includes/Sidebar";
 import Main from "../includes/Main";
 import { useAppContext } from "../../context/AuthProvider";
+import { events } from "../../services/helpers";
+import useLogout from "../../hooks/useLogout";
 
 const Protected = ({ children }) => {
   const { auth } = useAppContext();
   const location = useLocation();
+  const logout = useLogout();
+
+  let timer;
+
+  const handleLogoutTimer = () => {
+    timer = setTimeout(() => {
+      resetTimer();
+
+      Object.values(events).forEach((item) => {
+        window.removeEventListener(item, resetTimer);
+      });
+
+      signout();
+    }, process.env.REACT_APP_SESSION_DURATION);
+  };
+
+  const resetTimer = () => {
+    if (timer) clearTimeout(timer);
+  };
+
+  useEffect(() => {
+    if (auth && auth?.user !== null) {
+      Object.values(events).forEach((item) => {
+        window.addEventListener(item, () => {
+          resetTimer();
+          handleLogoutTimer();
+        });
+      });
+    }
+  }, [auth]);
+
+  const signout = async () => {
+    await logout();
+  };
 
   return auth?.user ? (
     <Content>

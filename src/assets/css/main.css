@@ -658,6 +658,7 @@ select, .cs__select::after, .cs__select__lg::after {
 
 .cs__bttn.danger {
     background-color: var(--color-danger-variant);
+    color: var(--color-white);
 }
 
 .cs__bttn.danger:hover {
@@ -1932,4 +1933,41 @@ select, .cs__select::after, .cs__select__lg::after {
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+/* Complaints Section */
+.complaint__details {
+    background-color: var(--color-white);
+    padding: var(--card-padding);
+    border-radius: 8px;
+    border: 1px solid var(--color-card-border);
+}
+
+.complaint__details p {
+    text-align: justify;
+    line-height: 1.7;
+    letter-spacing: 1px;
+}
+
+.task__btn__group {
+    display: flex;
+    justify-content: space-between;
+}
+
+.task__btn__group .task__btn {
+    padding: 0.52rem 1.64rem;
+}
+
+.todo__description {
+    display: flex;
+    gap: 0.32rem;
+    align-items: center;
+}
+
+.remove-mg {
+    margin: 0 !important;
+}
+
+.line__through {
+    text-decoration: line-through;
 }

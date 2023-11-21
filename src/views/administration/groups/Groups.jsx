@@ -18,7 +18,6 @@ const Groups = () => {
       field: "name",
       header: "Name",
       isSortable: true,
-
     },
     {
       field: "label",
@@ -89,9 +88,11 @@ const Groups = () => {
         <div className="col-md-12">
           <CSDatatable
             columns={columns}
+            cols={columns}
             data={collection}
             isSearchable
             manage={manage}
+            exportable
           />
         </div>
       </div>

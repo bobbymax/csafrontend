@@ -24,7 +24,12 @@ const Assign = () => {
     },
     {
       field: "activity",
-      header: "Request Type",
+      header: "Type",
+      isSortable: true,
+    },
+    {
+      field: "owner.description",
+      header: "Report",
       isSortable: true,
     },
     {
@@ -35,6 +40,11 @@ const Assign = () => {
     {
       field: "raised_at",
       header: "Raised",
+      isSortable: false,
+    },
+    {
+      field: "owner.status",
+      header: "Report Status",
       isSortable: false,
     },
   ];
@@ -53,6 +63,8 @@ const Assign = () => {
     Alert.success(response?.status, response?.message);
     handleClose();
   };
+
+  // console.log(collection);
 
   const handleClose = () => {
     setShow(false);

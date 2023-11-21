@@ -1,45 +1,29 @@
 import { useEffect, useState } from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
-import Alert from "../../../services/alert";
 import PageHeader from "../../../layouts/includes/PageHeader";
 import CSDatatable from "../../../layouts/components/tables/CSDatatable";
-import CUIncident from "./CUIncident";
-import { useAppContext } from "../../../context/AuthProvider";
+import Alert from "../../../services/alert";
+import CUSType from "./CUSType";
 
-const Incidents = () => {
+const SupportTypes = () => {
   const [collection, setCollection] = useState([]);
-  const [dependencies, setDependencies] = useState({});
+  const [dependencies, setDependencies] = useState([]);
   const [show, setShow] = useState(false);
   const [data, setData] = useState(undefined);
   const [isUpdating, setIsUpdating] = useState(false);
 
   const axios = useAxiosPrivate();
-  const { auth } = useAppContext();
 
   const columns = [
     {
-      field: "attributes.issue.name",
-      header: "Issue",
+      field: "name",
+      header: "Name",
       isSortable: true,
     },
     {
-      field: "attributes.department.code",
+      field: "department.code",
       header: "Department",
-      isSortable: true,
-    },
-    {
-      field: "attributes.location",
-      header: "Location",
-      isSortable: true,
-    },
-    {
-      field: "attributes.floor",
-      header: "Floor",
-      isSortable: true,
-    },
-    {
-      field: "status",
-      header: "Status",
+      isSortable: false,
     },
   ];
 
@@ -65,7 +49,7 @@ const Incidents = () => {
       if (result.isConfirmed) {
         try {
           axios
-            .delete(`tickets/${data?.id}`)
+            .delete(`helpdeskTypes/${data?.id}`)
             .then((res) => {
               const response = res.data;
               setCollection(collection.filter((coll) => coll.id !== data.id));
@@ -81,6 +65,7 @@ const Incidents = () => {
       }
     });
   };
+
   const handleSubmit = (response) => {
     if (response?.action === "alter") {
       setCollection(
@@ -105,37 +90,13 @@ const Incidents = () => {
     const controller = new AbortController();
 
     try {
-      const urls = [
-        "tickets",
-        "users",
-        "departments",
-        "issues",
-        "locations",
-        "floors",
-        "incidentCategories",
-      ];
-
+      const urls = ["helpdeskTypes", "departments"];
       const requests = urls.map((url) => axios.get(url));
 
       Promise.all(requests)
         .then((responses) => {
-          const incidents = responses[0].data?.data;
-          const users = responses[1].data?.data;
-          setCollection(
-            incidents.filter((incident) => incident.category === "incident")
-          );
-          setDependencies({
-            users: users.filter(
-              (user) =>
-                parseInt(user?.department_id) ===
-                parseInt(auth?.user?.department_id)
-            ),
-            departments: responses[2].data?.data,
-            issues: responses[3].data?.data,
-            locations: responses[4].data?.data,
-            floors: responses[5].data?.data,
-            supportTypes: responses[6].data?.data,
-          });
+          setCollection(responses[0].data?.data);
+          setDependencies(responses[1].data?.data);
         })
         .catch((err) => console.error(err));
     } catch (error) {
@@ -147,33 +108,32 @@ const Incidents = () => {
       controller.abort();
     };
   }, []);
+
   return (
     <>
-      <CUIncident
-        title="What have you Seen?"
+      <CUSType
+        title="Complain Type"
         show={show}
         handleClose={handleClose}
         handleSubmit={handleSubmit}
         isUpdating={isUpdating}
         data={data}
-        dependencies={{ ...dependencies }}
+        dependencies={dependencies}
       />
+
       <div className="row">
         <PageHeader
-          text="See Something"
-          icon="face"
-          btnIcon="mic"
-          btnText="Say Something"
-          variant="danger"
+          text="Complain Types"
+          btnText="Add Type"
           handleClick={() => setShow(true)}
         />
+
         <div className="col-md-12">
           <CSDatatable
             columns={columns}
             data={collection}
             isSearchable
             manage={manage}
-            destroy={destroy}
           />
         </div>
       </div>
@@ -181,4 +141,4 @@ const Incidents = () => {
   );
 };
 
-export default Incidents;
+export default SupportTypes;

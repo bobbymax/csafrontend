@@ -1,13 +1,48 @@
+import { useEffect, useState } from "react";
 import CircularProgress from "@mui/joy/CircularProgress";
 // import { Calendar, momentLocalizer } from "react-big-calendar";
 // import events from "../services/events";
 import moment from "moment";
 import CSButton from "../layouts/components/forms/CSButton";
+import { useAppContext } from "../context/AuthProvider";
 
 // const localizer = momentLocalizer(moment);
 
 const Home = () => {
-  // console.log(auth);
+  const { auth } = useAppContext();
+
+  const [staff, setStaff] = useState(null);
+  const [stats, setStats] = useState({});
+
+  // console.log(stats);
+
+  const handleArrs = (arr, status) => {
+    const pending = arr?.filter((ar) => ar.status === status)?.length;
+    const full = arr?.length;
+    const div = pending / full;
+
+    const value = isNaN(div) ? 0 : div;
+    // console.log(1 * 100);
+
+    return {
+      percentage: Math.round(value * 100),
+      display: `${pending} / ${full}`,
+    };
+  };
+
+  useEffect(() => {
+    if (staff !== null) {
+      const { statistics } = staff;
+      setStats(statistics);
+    }
+  }, [staff]);
+
+  useEffect(() => {
+    if (auth) {
+      const { user } = auth;
+      setStaff(user);
+    }
+  }, [auth]);
 
   return (
     <div className="dashboard__container">
@@ -22,11 +57,15 @@ const Home = () => {
                     sx={{ "--CircularProgress-size": "140px" }}
                     determinate
                     color="danger"
-                    value={88}
+                    value={
+                      handleArrs(stats?.requisitions, "approved").percentage
+                    }
                   >
                     <div className="card__text__details text-danger">
                       <small>Requisitions</small>
-                      <p className="text-danger">2 / 3</p>
+                      <p className="text-danger">
+                        {handleArrs(stats?.requisitions, "approved").display}
+                      </p>
                     </div>
                   </CircularProgress>
                 </div>
@@ -37,12 +76,14 @@ const Home = () => {
                     size="lg"
                     sx={{ "--CircularProgress-size": "140px" }}
                     determinate
-                    value={38}
+                    value={handleArrs(stats?.flights, "confirmed").percentage}
                     color="primary"
                   >
                     <div className="card__text__details text-primary">
                       <small>Flights</small>
-                      <p className="text-primary">2 / 3</p>
+                      <p className="text-primary">
+                        {handleArrs(stats?.flights, "confirmed").display}
+                      </p>
                     </div>
                   </CircularProgress>
                 </div>
@@ -53,12 +94,14 @@ const Home = () => {
                     size="lg"
                     sx={{ "--CircularProgress-size": "140px" }}
                     determinate
-                    value={66.67}
+                    value={handleArrs(stats?.flights, "confirmed").percentage}
                     color="warning"
                   >
                     <div className="card__text__details text-warning">
                       <small>Hotels</small>
-                      <p className="text-warning">2 / 3</p>
+                      <p className="text-warning">
+                        {handleArrs(stats?.hotels, "confirmed").display}
+                      </p>
                     </div>
                   </CircularProgress>
                 </div>
@@ -69,12 +112,14 @@ const Home = () => {
                     size="lg"
                     sx={{ "--CircularProgress-size": "140px" }}
                     determinate
-                    value={55}
+                    value={handleArrs(stats?.furniture, "approved").percentage}
                     color="success"
                   >
                     <div className="card__text__details text-success">
                       <small>Furnitures</small>
-                      <p className="text-success">2 / 3</p>
+                      <p className="text-success">
+                        {handleArrs(stats?.furniture, "approved").display}
+                      </p>
                     </div>
                   </CircularProgress>
                 </div>
@@ -91,12 +136,14 @@ const Home = () => {
                     size="lg"
                     sx={{ "--CircularProgress-size": "140px" }}
                     determinate
-                    value={25}
+                    value={handleArrs(stats?.logistics, "confirmed").percentage}
                     color="warning"
                   >
                     <div className="card__text__details text-warning">
                       <small>Logistics</small>
-                      <p className="text-warning">2 / 3</p>
+                      <p className="text-warning">
+                        {handleArrs(stats?.logistics, "confirmed").display}
+                      </p>
                     </div>
                   </CircularProgress>
                 </div>
@@ -107,12 +154,14 @@ const Home = () => {
                     size="lg"
                     sx={{ "--CircularProgress-size": "140px" }}
                     determinate
-                    value={45.87}
+                    value={handleArrs(stats?.tickets, "resolved").percentage}
                     color="danger"
                   >
                     <div className="card__text__details text-danger">
                       <small>Tickets</small>
-                      <p className="text-danger">2 / 3</p>
+                      <p className="text-danger">
+                        {handleArrs(stats?.tickets, "resolved").display}
+                      </p>
                     </div>
                   </CircularProgress>
                 </div>
@@ -123,12 +172,14 @@ const Home = () => {
                     size="lg"
                     sx={{ "--CircularProgress-size": "140px" }}
                     determinate
-                    value={66.67}
+                    value={handleArrs(stats?.tasks, "completed").percentage}
                     color="success"
                   >
                     <div className="card__text__details text-success">
                       <small>Tasks</small>
-                      <p className="text-success">2 / 3</p>
+                      <p className="text-success">
+                        {handleArrs(stats?.tasks, "completed").display}
+                      </p>
                     </div>
                   </CircularProgress>
                 </div>
@@ -139,12 +190,14 @@ const Home = () => {
                     size="lg"
                     sx={{ "--CircularProgress-size": "140px" }}
                     determinate
-                    value={66.67}
+                    value={handleArrs(stats?.meetings, "approved").percentage}
                     color="primary"
                   >
                     <div className="card__text__details text-primary">
                       <small>Meetings</small>
-                      <p className="text-primary">2 / 3</p>
+                      <p className="text-primary">
+                        {handleArrs(stats?.meetings, "approved").display}
+                      </p>
                     </div>
                   </CircularProgress>
                 </div>
@@ -154,7 +207,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="row">
+      {/* <div className="row">
         <div className="col-md-7"></div>
         <div className="col-md-5">
           <div className="flight__details">
@@ -209,7 +262,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

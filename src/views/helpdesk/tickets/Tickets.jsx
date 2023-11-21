@@ -16,27 +16,17 @@ const Tickets = () => {
 
   const columns = [
     {
-      field: "user",
-      header: "Staff",
-      isSortable: true,
-    },
-    {
-      field: "issue",
+      field: "attributes.issue.name",
       header: "Issue",
       isSortable: true,
     },
     {
-      field: "department",
-      header: "Department",
-      isSortable: true,
-    },
-    {
-      field: "location",
+      field: "attributes.location",
       header: "Location",
       isSortable: true,
     },
     {
-      field: "floor",
+      field: "attributes.floor",
       header: "Floor",
       isSortable: true,
     },
@@ -119,6 +109,7 @@ const Tickets = () => {
         "issues",
         "locations",
         "floors",
+        "helpdeskTypes",
       ];
 
       const requests = urls.map((url) => axios.get(url));
@@ -126,6 +117,7 @@ const Tickets = () => {
       Promise.all(requests)
         .then((responses) => {
           const tickets = responses[0].data?.data;
+          const supportType = responses[6].data?.data;
           setCollection(
             tickets.filter((incident) => incident.category === "support")
           );
@@ -135,6 +127,9 @@ const Tickets = () => {
             issues: responses[3].data?.data,
             locations: responses[4].data?.data,
             floors: responses[5].data?.data,
+            supportType: supportType.filter(
+              (typ) => typ?.label === "it-support"
+            )[0],
           });
         })
         .catch((err) => console.error(err));

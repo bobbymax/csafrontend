@@ -92,6 +92,10 @@ export const formatSelectOptions = (data, value, label, arr =[]) =>
     }
   }));
 
+  export const events = [
+    "load", "mousemove", "mousedown", "click", "scroll", "keypress"
+  ]
+
   // {
   //   id: 9,
   //   title: 'Happy Hour',

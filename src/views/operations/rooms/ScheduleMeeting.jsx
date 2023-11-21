@@ -164,8 +164,6 @@ const ScheduleMeeting = () => {
     };
   }, []);
 
-  //   console.log(details);
-
   return (
     <>
       <AddMeetingSchedule

@@ -4,10 +4,15 @@ const CSBox = ({
   label = "",
   value,
   onChange = undefined,
+  noMargin = false,
   ...attributes
 }) => {
   return (
-    <div className="form-check form-switch cs__form__group">
+    <div
+      className={`form-check form-switch cs__form__group ${
+        noMargin && "remove-mg"
+      }`}
+    >
       <input
         className="form-check-input"
         type={type}

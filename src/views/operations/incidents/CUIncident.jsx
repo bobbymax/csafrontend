@@ -27,22 +27,29 @@ const CUIncident = ({
     id: 0,
     user_id: 0,
     department_id: 0,
+    owner_id: 0,
     issue_id: 0,
     location_id: 0,
+    helpdesk_type_id: 0,
     floor_id: 0,
     related_issue_id: 0,
     code: "",
     description: "",
     category: "incident",
-    office_no: "",
+    landmark: "",
+    office_number: "",
     attachment: "",
+    priority: "",
+    type: "",
   };
 
   const [state, setState] = useState(initialState);
   const [users, setUsers] = useState([]);
   const [issues, setIssues] = useState([]);
   const [locations, setLocations] = useState([]);
+  const [departments, setDepartments] = useState([]);
   const [floors, setFloors] = useState([]);
+  const [supports, setSupports] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [forOthers, setForOthers] = useState(false);
   const [fileUpload, setFileUpload] = useState(null);
@@ -113,14 +120,31 @@ const CUIncident = ({
       dependencies?.locations &&
       dependencies?.floors
     ) {
-      const { issues, users, locations, floors } = dependencies;
+      const { users, locations, floors, departments, supportTypes } =
+        dependencies;
 
-      setIssues(issues);
+      // setIssues(issues);
       setUsers(users);
       setLocations(locations);
       setFloors(floors);
+      setDepartments(departments);
+      setSupports(supportTypes);
     }
   }, [dependencies]);
+
+  useEffect(() => {
+    if (state.helpdesk_type_id > 0) {
+      const type = supports.filter(
+        (sup) => parseInt(sup.id) === state.helpdesk_type_id
+      )[0];
+
+      setState({
+        ...state,
+        owner_id: type?.department_id ?? 0,
+      });
+      setIssues(type?.issues ?? []);
+    }
+  }, [state.helpdesk_type_id]);
 
   useEffect(() => {
     if (data !== undefined) {
@@ -133,7 +157,7 @@ const CUIncident = ({
         floor_id: data?.floor_id,
         issue_id: data?.issue_id,
         description: data?.description,
-        office_no: data?.office_no,
+        office_number: data?.office_number,
       });
     }
   }, [data]);
@@ -151,29 +175,26 @@ const CUIncident = ({
         noBorder
         noHeader
       >
-        {/* <div className="col-md-6 mb-3">
+        <div className="col-md-4 mb-3">
           <CSSelect
-            label="Department"
-            value={state.department_id}
+            label="Incident Type"
+            value={state.helpdesk_type_id}
             onChange={(e) =>
-              setState({
-                ...state,
-                department_id: parseInt(e.target.value),
-              })
+              setState({ ...state, helpdesk_type_id: parseInt(e.target.value) })
             }
           >
-            <CSSelectOptions value={0} label="Select DDD" disabled />
-            {departments.map((dept) => (
+            <CSSelectOptions value={0} label="Select Type" disabled />
+            {supports.map((loc) => (
               <CSSelectOptions
-                key={dept?.id}
-                value={dept?.id}
-                label={dept?.name}
+                key={loc?.id}
+                value={loc?.id}
+                label={loc?.name}
               />
             ))}
           </CSSelect>
-        </div> */}
+        </div>
 
-        <div className="col-md-12 mb-3">
+        <div className="col-md-8 mb-3">
           <CSSelect
             label="Where did you see this Incident?"
             value={state.location_id}
@@ -194,13 +215,13 @@ const CUIncident = ({
 
         <div className={`col-md-${hasFloors ? "7" : "12"} mb-3`}>
           <CSInput
-            type="number"
-            step="1"
             id="officeId"
-            label="Office Number Close to Incident"
-            placeholder="Enter Office Number"
-            value={state.office_no}
-            onChange={(e) => setState({ ...state, office_no: e.target.value })}
+            label="Landmark Close to Incident"
+            placeholder="Enter Closest Location"
+            value={state.office_number}
+            onChange={(e) =>
+              setState({ ...state, office_number: e.target.value })
+            }
           />
         </div>
 
@@ -234,6 +255,7 @@ const CUIncident = ({
             onChange={(e) =>
               setState({ ...state, issue_id: parseInt(e.target.value) })
             }
+            disabled={issues?.length < 1}
           >
             <CSSelectOptions value={0} label="Select Issue" disabled />
             {issues.map((floor) => (
@@ -265,6 +287,26 @@ const CUIncident = ({
             value={state.attachment}
             onChange={(e) => setState({ ...state, attachment: e.target.value })}
           />
+        </div>
+        <div className="col-md-12 mb-3">
+          <CSSelect
+            label="Priority"
+            value={state.priority}
+            onChange={(e) => setState({ ...state, priority: e.target.value })}
+          >
+            <CSSelectOptions value="" label="Select Severity" disabled />
+            {[
+              { key: "low", label: "Low" },
+              { key: "medium", label: "Medium" },
+              { key: "high", label: "High" },
+            ].map((priority, i) => (
+              <CSSelectOptions
+                key={i}
+                value={priority.key}
+                label={priority.label}
+              />
+            ))}
+          </CSSelect>
         </div>
         <div className="col-md-12 mb-3">
           <CSBox
