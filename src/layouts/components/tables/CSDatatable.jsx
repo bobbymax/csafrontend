@@ -22,6 +22,7 @@ const CSDatatable = ({
   task = undefined,
   confirmBooking = undefined,
   rowsPerPage = 10,
+  close = undefined,
 }) => {
   const [exports, setExports] = useState([]);
   const dt = useRef(null);
@@ -97,6 +98,34 @@ const CSDatatable = ({
         <span className="material-icons-sharp">settings</span>
         <p>Manage</p>
       </button>
+    );
+  };
+
+  const closeRequestTemplate = (raw) => {
+    return (
+      <button
+        type="button"
+        className="cs__table__btn cs__bg__danger"
+        onClick={() => close(raw)}
+      >
+        <span className="material-icons-sharp">close</span>
+        <p>Close Request</p>
+      </button>
+    );
+  };
+
+  const isArrayTemplate = (raw) => {
+    let display = "";
+
+    for (let i = 0; i < raw?.staff?.length; i++) {
+      const staffName = raw?.staff[i];
+      display += `${staffName}${i < raw?.staff?.length - 1 ? ", " : ""}`;
+    }
+
+    return (
+      <>
+        <p>{display?.length < 1 ? "Not Assigned" : display}</p>
+      </>
     );
   };
 
@@ -276,14 +305,28 @@ const CSDatatable = ({
         scrollable
         scrollHeight="520px"
       >
-        {columns.map((col, i) => (
-          <Column
-            key={i}
-            field={col.field}
-            header={col.header}
-            sortable={col.isSortable}
-          />
-        ))}
+        {columns.map((col, i) => {
+          if (col.isArr) {
+            return (
+              <Column
+                key={i}
+                field={col.field}
+                header={col.header}
+                sortable={col.isSortable}
+                body={isArrayTemplate}
+              />
+            );
+          } else {
+            return (
+              <Column
+                key={i}
+                field={col.field}
+                header={col.header}
+                sortable={col.isSortable}
+              />
+            );
+          }
+        })}
         {manage !== undefined && <Column body={actionBodyTemplate} />}
         {confirmBooking !== undefined && <Column body={bookingBodyTemplate} />}
         {print !== undefined && <Column body={printBodyTemplate} />}
@@ -291,6 +334,7 @@ const CSDatatable = ({
         {assign !== undefined && <Column body={assignBodyTemplate} />}
         {view !== undefined && <Column body={viewBodyTemplate} />}
         {approve !== undefined && <Column body={approveBodyTemplate} />}
+        {close !== undefined && <Column body={closeRequestTemplate} />}
         {destroy !== undefined && <Column body={destroyBodyTemplate} />}
       </DataTable>
     </div>

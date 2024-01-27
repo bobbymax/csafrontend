@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
 import CircularProgress from "@mui/joy/CircularProgress";
-// import { Calendar, momentLocalizer } from "react-big-calendar";
-// import events from "../services/events";
-import moment from "moment";
-import CSButton from "../layouts/components/forms/CSButton";
 import { useAppContext } from "../context/AuthProvider";
-
-// const localizer = momentLocalizer(moment);
 
 const Home = () => {
   const { auth } = useAppContext();
@@ -14,7 +8,7 @@ const Home = () => {
   const [staff, setStaff] = useState(null);
   const [stats, setStats] = useState({});
 
-  // console.log(stats);
+  const [input, setInput] = useState("");
 
   const handleArrs = (arr, status) => {
     const pending = arr?.filter((ar) => ar.status === status)?.length;
@@ -28,6 +22,20 @@ const Home = () => {
       percentage: Math.round(value * 100),
       display: `${pending} / ${full}`,
     };
+  };
+
+  const _setInput = (e) => {
+    //
+    const value = e.target.value;
+    setInput(value);
+
+    if (value?.length >= 3) {
+      const response = airports?.filter((airport) =>
+        airport?.city?.toLowerCase().includes(value?.toLowerCase())
+      );
+
+      console.log(response);
+    }
   };
 
   useEffect(() => {
@@ -116,7 +124,7 @@ const Home = () => {
                     color="success"
                   >
                     <div className="card__text__details text-success">
-                      <small>Furnitures</small>
+                      <small>Furniture</small>
                       <p className="text-success">
                         {handleArrs(stats?.furniture, "approved").display}
                       </p>
@@ -127,7 +135,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="col-md-12">
+        <div className="col-md-12 mb-4">
           <div className="dashboard__statistics">
             <div className="row">
               <div className="col-md-3">

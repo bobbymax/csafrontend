@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import Modal from "../../../layouts/components/modals/Modal";
 import CSForm from "../../../layouts/components/forms/CSForm";
 import CSInput from "../../../layouts/components/forms/CSInput";
@@ -8,6 +7,8 @@ import CSSelect from "../../../layouts/components/forms/CSSelect";
 import CSSelectOptions from "../../../layouts/components/forms/CSSelectOptions";
 import CSButton from "../../../layouts/components/forms/CSButton";
 import CSBox from "../../../layouts/components/forms/CSBox";
+import { useFetchCollection } from "../../../hooks/kernal";
+import { handleReturnedResponse } from "../../../http/helpers/functions";
 
 const CUModules = ({
   title = "",
@@ -38,9 +39,9 @@ const CUModules = ({
   const [sGroups, setSGroups] = useState([]);
   const [sDepartments, setSDepartments] = useState([]);
 
-  const axios = useAxiosPrivate();
+  const { submitForm } = useFetchCollection("modules");
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     const body = {
@@ -49,47 +50,10 @@ const CUModules = ({
       groups: sGroups,
     };
 
-    try {
-      setIsLoading(true);
-      if (isUpdating) {
-        axios
-          .patch(`modules/${state.id}`, body)
-          .then((res) => {
-            const response = res.data;
-            handleSubmit({
-              status: "Updated!!",
-              data: response.data,
-              message: response.message,
-              action: "alter",
-            });
-            reset();
-          })
-          .catch((err) => {
-            console.error(err.message);
-            setIsLoading(false);
-          });
-      } else {
-        axios
-          .post("modules", body)
-          .then((res) => {
-            const response = res.data;
-            handleSubmit({
-              status: "Created!!",
-              data: response.data,
-              message: response.message,
-              action: "store",
-            });
-            reset();
-          })
-          .catch((err) => {
-            console.error(err.message);
-            setIsLoading(false);
-          });
-      }
-    } catch (error) {
-      console.error(error);
-      setIsLoading(false);
-    }
+    const response = await submitForm(body, isUpdating);
+
+    handleSubmit(handleReturnedResponse(response, isUpdating));
+    reset();
   };
 
   const handleModalClose = () => {
@@ -159,13 +123,13 @@ const CUModules = ({
   useEffect(() => {
     if (
       dependencies !== undefined &&
-      dependencies?.apps &&
+      dependencies?.applications &&
       dependencies?.departments &&
       dependencies?.groups
     ) {
-      const { apps, departments, groups } = dependencies;
+      const { applications, departments, groups } = dependencies;
 
-      setApplications(apps);
+      setApplications(applications);
       setDepartments(departments);
       setGroups(groups);
     }

@@ -46,7 +46,7 @@ const Login = () => {
       setIsLoading(false);
       navigate(from, { replace: true });
     } catch (error) {
-      // console.log(error);
+      console.log(error);
       // if (!error?.response) {
       //   setErrorMsg("No Server Response");
       // } else if (error?.response?.status === 400) {

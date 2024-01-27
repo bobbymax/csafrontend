@@ -6,6 +6,9 @@ import CSTextarea from "../../../layouts/components/forms/CSTextarea";
 import CSSelect from "../../../layouts/components/forms/CSSelect";
 import CSSelectOptions from "../../../layouts/components/forms/CSSelectOptions";
 import CSButton from "../../../layouts/components/forms/CSButton";
+import airports from "../../../assets/data/airports.json";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
 const AddReservation = ({
   title = "",
@@ -35,6 +38,8 @@ const AddReservation = ({
     instructions: "",
   };
 
+  const animated = makeAnimated();
+
   const paramsState = {
     selectGrid: "",
     leadOne: "",
@@ -49,12 +54,18 @@ const AddReservation = ({
   const [count, setCount] = useState(0);
   const [reqType, setReqType] = useState("");
   const [params, setParams] = useState(paramsState);
+  const [places, setPlaces] = useState([]);
+  const [destination, setDestination] = useState(null);
+  const [place, setPlace] = useState(null);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
     const body = {
       ...resState,
+      take_off: place?.value ?? "",
+      destination:
+        resState.type === "flight" ? destination?.value : resState.destination,
       rId: resState.rId < 1 ? count + 1 : resState.rId,
     };
 
@@ -81,6 +92,8 @@ const AddReservation = ({
     setCount(0);
     setParams(paramsState);
     setReqType("");
+    setDestination(null);
+    setPlace(null);
   };
 
   useEffect(() => {
@@ -98,7 +111,20 @@ const AddReservation = ({
     }
   }, [resState.beneficiary_id]);
 
-  //   console.log(resState);
+  useEffect(() => {
+    let dogs = [];
+
+    airports.map((airport) =>
+      dogs.push({
+        value: `${airport.iata_code} - ${airport.name} ${airport.city}, ${airport.country}`,
+        label: `${airport.iata_code} - ${airport.name} ${airport.city}, ${airport.country}`,
+      })
+    );
+
+    setPlaces(dogs);
+  }, [airports]);
+
+  // console.log(airports);
 
   useEffect(() => {
     if (
@@ -148,10 +174,15 @@ const AddReservation = ({
         visa: data?.visa ?? "",
         instructions: data?.instructions ?? "",
       });
+
+      if (data?.type === "flight") {
+        setPlace(places.filter((pla) => pla.value === data?.take_off)[0]);
+        setDestination(
+          places.filter((pla) => pla.value === data?.destination)[0]
+        );
+      }
     }
   }, [data]);
-
-  //   console.log(resState);
 
   return (
     <Modal title={title} show={show} handleClose={handleModalClose} lg={lg}>
@@ -230,27 +261,42 @@ const AddReservation = ({
         </div>
         {reqType === "flight" && (
           <div className="col-md-6 mb-4">
-            <CSInput
-              label="From"
-              value={resState.take_off}
-              onChange={(e) =>
-                setResState({ ...resState, take_off: e.target.value })
-              }
-              placeholder="Enter Desired Takeoff State"
+            <label className="cs__form-label">From</label>
+            <Select
+              components={animated}
+              options={places}
+              placeholder="Select Location"
+              value={place}
+              onChange={setPlace}
+              isSearchable
             />
           </div>
         )}
 
-        <div className={`col-md-${params.subGrid} mb-3`}>
-          <CSInput
-            label={params.subTwo}
-            value={resState.destination}
-            onChange={(e) =>
-              setResState({ ...resState, destination: e.target.value })
-            }
-            placeholder="Enter Destination"
-          />
-        </div>
+        {reqType === "flight" ? (
+          <div className="col-md-6 mb-4">
+            <label className="cs__form-label">To</label>
+            <Select
+              components={animated}
+              options={places}
+              placeholder="Select Location"
+              value={destination}
+              onChange={setDestination}
+              isSearchable
+            />
+          </div>
+        ) : (
+          <div className={`col-md-${params.subGrid} mb-3`}>
+            <CSInput
+              label={params.subTwo}
+              value={resState.destination}
+              onChange={(e) =>
+                setResState({ ...resState, destination: e.target.value })
+              }
+              placeholder="Enter Destination"
+            />
+          </div>
+        )}
 
         {reqType === "flight" && (
           <>
@@ -313,7 +359,6 @@ const AddReservation = ({
             block
             disabled={
               resState.name === "" ||
-              resState.destination === "" ||
               resState.begin === "" ||
               resState.elapse === ""
             }

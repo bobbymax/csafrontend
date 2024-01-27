@@ -1,18 +1,35 @@
-import { useEffect, useState } from "react";
-import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+import { useState } from "react";
 import CSDatatable from "../../../layouts/components/tables/CSDatatable";
 import PageHeader from "../../../layouts/includes/PageHeader";
 import Alert from "../../../services/alert";
 import CUModules from "./CUModules";
+import {
+  useFetchCollection,
+  useFetchDependencies,
+} from "../../../hooks/kernal";
 
 const Modules = () => {
-  const [collection, setCollection] = useState([]);
-  const [dependencies, setDependencies] = useState({});
   const [show, setShow] = useState(false);
   const [data, setData] = useState(undefined);
   const [isUpdating, setIsUpdating] = useState(false);
+  const { iterable, updateIterable } = useFetchCollection("modules");
 
-  const axios = useAxiosPrivate();
+  const params = [
+    {
+      name: "applications",
+      url: "applications",
+    },
+    {
+      name: "departments",
+      url: "departments",
+    },
+    {
+      name: "groups",
+      url: "groups",
+    },
+  ];
+
+  const dependencies = useFetchDependencies(params);
 
   const columns = [
     {
@@ -45,20 +62,7 @@ const Modules = () => {
   ];
 
   const handleSubmit = (response) => {
-    if (response?.action === "alter") {
-      setCollection(
-        collection.map((collects) => {
-          if (collects.id == response?.data?.id) {
-            return response?.data;
-          }
-
-          return collects;
-        })
-      );
-    } else {
-      setCollection([response?.data, ...collection]);
-    }
-
+    updateIterable(response?.data, response?.action);
     Alert.success(response?.status, response?.message);
     handleClose();
   };
@@ -74,41 +78,6 @@ const Modules = () => {
     setIsUpdating(true);
     setShow(true);
   };
-
-  useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
-
-    try {
-      const urls = ["modules", "applications", "departments", "groups"];
-
-      const requests = urls.map((url) => axios.get(url));
-
-      Promise.all(requests)
-        .then((responses) => {
-          setCollection(responses[0].data?.data);
-          setDependencies({
-            apps: responses[1].data?.data,
-            departments: responses[2].data?.data,
-            groups: responses[3].data?.data,
-          });
-        })
-        .catch((err) => console.error(err));
-    } catch (error) {
-      console.error(error);
-    }
-
-    return () => {
-      isMounted = false;
-      controller.abort();
-    };
-  }, []);
-
-  // useEffect(() => {
-  //   const collect = new ApiHttp("modules");
-
-  //   console.log(collect);
-  // }, []);
 
   return (
     <>
@@ -131,7 +100,7 @@ const Modules = () => {
           <CSDatatable
             columns={columns}
             cols={cols}
-            data={collection}
+            data={iterable}
             isSearchable
             manage={manage}
             exportable

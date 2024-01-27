@@ -107,6 +107,7 @@ const Imports = () => {
                 {[
                   { key: "applications", label: "Applications" },
                   { key: "modules", label: "Modules" },
+                  { key: "products", label: "Products" },
                 ].map((cat, i) => (
                   <CSSelectOptions key={i} label={cat.label} value={cat.key} />
                 ))}

@@ -42,8 +42,8 @@ const MakeBooking = () => {
       reservations,
     };
 
-    // console.log(requests);
-    setIsLoading(true);
+    console.log(requests);
+    // setIsLoading(true);
 
     try {
       axios

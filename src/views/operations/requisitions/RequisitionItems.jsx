@@ -9,8 +9,8 @@ import CSButton from "../../../layouts/components/forms/CSButton";
 import RequisitionItem from "../../../layouts/components/partials/RequisitionItem";
 import CUItem from "./CUItem";
 import Alert from "../../../services/alert";
-import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { useAppContext } from "../../../context/AuthProvider";
+import { useFetchCollection } from "../../../hooks/kernal";
 
 const RequisitionItems = () => {
   const initialState = {
@@ -37,8 +37,9 @@ const RequisitionItems = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const axios = useAxiosPrivate();
   const { auth } = useAppContext();
+
+  const { submitForm } = useFetchCollection("requisitions");
 
   const manage = (item) => {
     setData(item);
@@ -108,7 +109,7 @@ const RequisitionItems = () => {
     setIsLoading(false);
   };
 
-  const makeRequisition = (e) => {
+  const makeRequisition = async (e) => {
     e.preventDefault();
 
     const body = {
@@ -119,38 +120,10 @@ const RequisitionItems = () => {
       items,
     };
 
-    try {
-      if (isUpdating) {
-        axios
-          .patch(`requisitions/${state.id}`, body)
-          .then((res) => {
-            const response = res.data;
-            Alert.success("Updated!!", response.message);
-            reset();
-            navigate("/requests/requisitions");
-          })
-          .catch((err) => {
-            setIsLoading(false);
-            console.error(err.message);
-          });
-      } else {
-        axios
-          .post("requisitions", body)
-          .then((res) => {
-            const response = res.data;
-            Alert.success("Done!!", response.message);
-            reset();
-            navigate("/requests/requisitions");
-          })
-          .catch((err) => {
-            setIsLoading(false);
-            console.error(err.message);
-          });
-      }
-    } catch (error) {
-      console.error(error);
-      setIsLoading(false);
-    }
+    const response = await submitForm(body, isUpdating);
+    Alert.success(`${isUpdating ? "Updated" : "Done"}`, response.message);
+    reset();
+    navigate("/requests/requisitions");
   };
 
   useEffect(() => {

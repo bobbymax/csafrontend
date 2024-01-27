@@ -42,6 +42,8 @@ const Tasks = lazy(() => import("../views/operations/tasks/Tasks"))
 const TreatRequisitions = lazy(() => import("../views/inventory/requisitions/TreatRequisitions"))
 const Requisition = lazy(() => import("../views/inventory/requisitions/Requisition"))
 const Assign = lazy(() => import("../views/operations/tasks/Assign"))
+const FurnitureRequests = lazy(() => import("../views/inventory/furniture/FurnitureRequests"))
+const ManageFurnitureRequest = lazy(() => import("../views/inventory/furniture/ManageFurnitureRequest"))
 
 // Requests
 const Imports = lazy(() => import("../views/administration/imports/Imports"))
@@ -58,6 +60,7 @@ const ViewMeetingSchedule = lazy(() => import("../views/operations/rooms/ViewMee
 const HandleMeetingSchedule = lazy(() => import("../views/operations/schedules/HandleMeetingSchedule"))
 const AddSchedule = lazy(() => import("../views/operations/schedules/AddSchedule"))
 const Furnitures = lazy(() => import("../views/operations/furnitures/Furnitures"))
+const CUFurniture = lazy(() => import("../views/operations/furnitures/CUFurniture"))
 
 
 // Helpdesk
@@ -250,6 +253,21 @@ export const routes = {
             name: 'Furniture Requests',
             element: <Furnitures />,
             url: '/requests/furnitures'
+        },
+        {
+            name: 'Alter Furniture Request',
+            element: <CUFurniture />,
+            url: '/requests/furnitures/manage'
+        },
+        {
+            name: 'Admin Furniture Requests',
+            element: <FurnitureRequests />,
+            url: '/inventory/furniture/requests'
+        },
+        {
+            name: 'Admin Manage Furniture Requests',
+            element: <ManageFurnitureRequest />,
+            url: '/inventory/manage/furniture/requests'
         },
         {
             name: 'Support Types',

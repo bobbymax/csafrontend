@@ -1971,3 +1971,9 @@ select, .cs__select::after, .cs__select__lg::after {
 .line__through {
     text-decoration: line-through;
 }
+
+.btn__side {
+    display: flex;
+    gap: 0.20rem;
+    align-items: center;
+}

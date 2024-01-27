@@ -47,6 +47,12 @@ const Assign = () => {
       header: "Report Status",
       isSortable: false,
     },
+    {
+      field: "staff",
+      header: "Assignees",
+      isSortable: false,
+      isArr: true,
+    },
   ];
 
   const handleSubmit = (response) => {
@@ -107,6 +113,7 @@ const Assign = () => {
     };
   }, []);
 
+  console.log(collection);
   return (
     <>
       <AssignTaskToStaff
