@@ -74,6 +74,7 @@ const ManageComplaint = lazy(() => import("../views/see-something/incidents/Mana
 
 // Vehicle Request
 const VehicleRequest = lazy(() => import("../views/fleetmgt/vehicle-request/VehicleRequest"))
+const VehicleRequestsReceived = lazy(() => import("../views/fleetmgt/vehicle-responses/VehicleRequestsReceived"))
 
 export const routes = {
     guest: [
@@ -406,6 +407,12 @@ export const routes = {
             name: 'Vehicle Request',
             element: <VehicleRequest />,
             url: '/fleets/vehicle-request'
+        },
+
+        {
+            name: 'Vehicle Requests Received',
+            element: <VehicleRequestsReceived />,
+            url: '/fleets/vehicle/requests'
         },
 
     ]

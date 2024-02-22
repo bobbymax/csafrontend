@@ -15,7 +15,7 @@ const VehicleRequest = () => {
 
   const columns = [
     {
-      field: "user",
+      field: "attributes.staff.name",
       header: "User",
       isSortable: true,
     },
@@ -25,7 +25,7 @@ const VehicleRequest = () => {
       isSortable: true,
     },
     {
-      field: "stock_type",
+      field: "attributes.stock_type",
       header: "Product Type",
       isSortable: true,
     },
@@ -82,6 +82,8 @@ const VehicleRequest = () => {
       }
     });
   };
+
+  //   console.log(iterable);
 
   const handleSubmit = (response) => {
     updateIterable(response?.data, response?.action);
