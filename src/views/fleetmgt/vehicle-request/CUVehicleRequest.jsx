@@ -9,6 +9,7 @@ import { useAppContext } from "../../../context/AuthProvider";
 import { useFetchCollection } from "../../../hooks/kernal";
 import CSTextarea from "../../../layouts/components/forms/CSTextarea";
 import { handleReturnedResponse } from "../../../http/helpers/functions";
+import moment from "moment";
 
 const CUVehicleRequest = ({
   title = "",
@@ -83,6 +84,9 @@ const CUVehicleRequest = ({
 
   useEffect(() => {
     if (data !== undefined) {
+      const required = moment(data?.required_date, "DD-MM-YYYY").format();
+      const returns = moment(data?.return_date, "DD-MM-YYYY").format();
+
       setState({
         ...state,
         id: data?.id,
@@ -90,8 +94,8 @@ const CUVehicleRequest = ({
         stock_type_id: data?.stock_type_id,
         location_id: data?.location_id,
         code: data?.code,
-        required_date: data?.required_date.slice(0, 10),
-        return_date: data?.return_date.slice(0, 10),
+        required_date: required.slice(0, 10),
+        return_date: returns.slice(0, 10),
         duration: data?.duration,
         destination: data?.destination,
         budget_code: data?.budget_code,

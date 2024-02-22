@@ -39,7 +39,8 @@ const Login = () => {
 
       setAuth({ user, token });
 
-      sessionStorage.setItem("auth", DataFile.encrypt(response.data.data));
+      // sessionStorage.setItem("auth", DataFile.encrypt(response.data.data));
+      sessionStorage.setItem("auth", response.data.data);
 
       setEmail("");
       setPwd("");

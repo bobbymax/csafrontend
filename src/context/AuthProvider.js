@@ -9,7 +9,8 @@ export const AuthProvider = ({children}) => {
 
     useEffect(() => {
         if (sess !== null) {
-            const authSession = DataFile.decrypt(sess)
+            // const authSession = DataFile.decrypt(sess)
+            const authSession = sess
             setAuth(authSession)
         }
     }, [sess])
